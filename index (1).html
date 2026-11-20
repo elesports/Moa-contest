@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8fafc" />
+  <title>모아대회 | 예체능 대회 찾기 · V0.3.1</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+:root{--ink:#18233d;--muted:#74819a;--line:#e6ebf3;--blue:#6153de;--blue-dark:#5144c4;--soft:#f6f8fd;--white:#fff;--shadow:0 8px 28px rgba(30,48,92,.055)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,-apple-system,sans-serif;background:#f9fbff;color:var(--ink);font-size:14px}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}.hidden{display:none!important}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.site-shell{min-height:100vh}.topbar{height:82px;display:flex;justify-content:space-between;align-items:center;max-width:1250px;margin:auto;padding:0 25px}.brand{display:flex;align-items:center;gap:11px}.brand-mark{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;color:white;background:var(--blue);font-size:28px;box-shadow:0 4px 12px rgba(97,83,222,.24)}.brand-name{font-weight:900;letter-spacing:-.75px;font-size:22px}.brand-beta{font-size:9px;letter-spacing:1px;font-weight:800;background:#eae7ff;color:var(--blue);padding:4px 6px;border-radius:5px;margin-left:9px;vertical-align:middle}.header-right{display:flex;align-items:center;gap:24px}.header-subtitle{color:#8893aa;font-size:12px}.button{border:0;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 17px;font-weight:750;transition:transform .15s,background .15s,box-shadow .15s}.button:hover{transform:translateY(-1px)}.button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #baaaff;outline-offset:2px}.button-primary{background:var(--blue);color:white;box-shadow:0 4px 12px rgba(97,83,222,.15)}.button-primary:hover{background:var(--blue-dark)}.button-small{font-size:12px;padding:11px 16px}.button-white{background:white;color:#5145b7}.button-hero-outline{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.45);color:white}.button-subtle{background:#f0f2fb;color:#4f5a77}.button-quiet{background:white;border:1px solid var(--line);padding:9px 12px;color:#66728a;font-size:12px}.content{max-width:1250px;margin:0 auto;padding:0 25px}.hero{min-height:316px;border-radius:23px;background:linear-gradient(116deg,#6255db 0%,#6558d9 51%,#aa87e5 100%);color:white;display:flex;align-items:center;position:relative;overflow:hidden;padding:40px 57px;box-shadow:0 18px 35px rgba(88,79,200,.13)}.hero-content{position:relative;z-index:2;max-width:590px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.13);font-size:11px;font-weight:650;letter-spacing:.2px;border-radius:30px;padding:7px 12px}.pulse-dot{height:6px;width:6px;background:#a8f1d7;border-radius:50%;box-shadow:0 0 0 4px #ffffff25}.hero h1{font-size:38px;letter-spacing:-1.7px;line-height:1.33;margin:17px 0 10px;font-weight:850}.hero h1 span{color:#dddaff}.hero p{font-size:13px;line-height:1.8;color:#e8e6ff;margin:0 0 20px;max-width:455px}.hero-actions{display:flex;gap:10px}.hero-art{position:absolute;width:440px;height:320px;right:20px;top:0}.orbit{position:absolute;border:1px solid #ffffff3e;border-radius:50%}.orbit-one{width:360px;height:360px;right:0;top:-19px}.orbit-two{width:245px;height:245px;right:59px;top:42px}.art-star{position:absolute;font-size:39px;color:#eee8ff}.star-a{top:43px;right:53px}.star-b{bottom:38px;right:353px;font-size:29px}.art-ticket{position:absolute;width:145px;height:107px;border-radius:19px;border:1px solid #ffffffbd;background:linear-gradient(160deg,#ffffffef,#efe9ffdf);box-shadow:0 12px 20px #34238530;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#7766bd;transform:rotate(-10deg)}.art-ticket span{font-size:37px}.art-ticket small{font-size:10px;letter-spacing:1.8px;font-weight:800}.ticket-one{top:68px;left:41px}.ticket-two{top:127px;right:72px;transform:rotate(10deg)}.ticket-three{top:185px;left:132px;transform:rotate(-4deg);width:124px;height:96px}.demo-banner{margin:19px 0 17px;background:#fff9ea;border:1px solid #f7e8bc;border-radius:12px;padding:12px 15px;display:flex;align-items:center;gap:10px;color:#6f5f37;line-height:1.5;font-size:12px}.demo-banner>span:nth-child(2){flex:1}.demo-banner>b,.demo-banner strong{font-weight:800}.switchline{white-space:nowrap;color:#665b44;font-weight:750;display:flex;align-items:center;gap:6px}.switchline input,.filter-check input{accent-color:var(--blue)}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:43px}.stat{background:white;border:1px solid var(--line);border-radius:14px;padding:18px 19px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}.stat-icon{display:grid;place-items:center;width:45px;height:45px;border-radius:13px;background:#edf0ff;color:#5c55cf;font-weight:900;font-size:20px}.stat-purple{background:#f5eaff;color:#aa68d9}.stat-orange{background:#fff2e5;color:#e69b49}.stat-green{background:#e9f8f3;color:#39ae8b}.stat-label{display:block;color:#8993a4;font-weight:650;font-size:11px}.stat strong{display:block;font-size:25px;margin-top:3px;line-height:1.15}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:21px}.section-kicker,.modal-kicker{color:#8b7add;letter-spacing:1.8px;font-size:10px;font-weight:850}.section-heading h2{font-size:25px;letter-spacing:-.7px;margin:6px 0 4px}.section-heading p{color:var(--muted);margin:0;font-size:12px}.mode-tabs{display:flex;gap:5px;background:#edf0f8;padding:5px;border-radius:12px}.mode-tab{border:0;background:transparent;color:#78829a;font-weight:750;border-radius:9px;padding:10px 18px;min-width:84px}.mode-tab.active{background:white;color:var(--blue);box-shadow:0 3px 9px #283a6320}.workspace{display:grid;grid-template-columns:246px minmax(0,1fr);gap:20px;align-items:start}.filters,.results{background:white;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.filters{padding:23px 19px 20px}.filter-head,.results-toolbar{display:flex;align-items:center;justify-content:space-between}.filter-head{margin-bottom:21px}.filter-head h3{font-size:15px;margin:0}.text-button{border:0;background:none;color:var(--blue);font-size:11px;font-weight:750}.field-label{display:block;font-size:12px;font-weight:750;margin:0 0 10px;color:#49566e}.search-box{display:flex;align-items:center;border:1px solid #e5eaf4;background:#fafbfe;border-radius:10px;padding:0 11px;gap:8px;color:#a4abc0}.search-box span{font-size:25px;line-height:1}.search-box input{width:100%;border:0;outline:0;background:transparent;padding:11px 0;font-size:12px;color:#2c3853}.search-box input::placeholder{color:#a0abbd}.filter-divider{height:1px;background:#edf0f5;margin:22px 0}.category-group{display:grid;gap:6px}.category-button{text-align:left;border:0;color:#596579;background:transparent;padding:11px 12px;border-radius:9px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:650}.category-button span{font-size:16px;width:21px}.category-button.selected{color:var(--blue);background:#f1efff;font-weight:800}.filters select,.form-grid input,.form-grid select,.form-grid textarea{width:100%;border:1px solid #e1e6f0;border-radius:9px;background:white;color:#34405a;padding:10px 11px;outline-color:#8f80ea}.filters>select{margin-bottom:17px;font-size:12px}.filter-check{display:flex;align-items:center;gap:8px;font-size:12px;color:#68758c;margin:10px 0;line-height:1.4}.filter-check input{width:15px;height:15px}.location-controls{display:flex;gap:8px}.location-controls .button{flex:1;font-size:11px;padding:10px 5px}.location-controls select{width:82px;max-width:82px;font-size:11px;padding:8px 3px;margin:0}.sidebar-note{color:#95a0b3;font-size:11px;line-height:1.65;margin:12px 0 0}.results{min-height:495px;padding:22px 22px 26px}.results-toolbar{gap:10px;margin-bottom:20px}.results-toolbar h3{font-size:16px;margin:0 0 5px}.results-toolbar h3 span{color:var(--blue);font-size:13px}.results-toolbar p{color:#97a0b3;margin:0;font-size:11px}.data-tools{display:flex;gap:7px}.card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.event-card{border:1px solid #e6eaf1;border-radius:13px;min-height:227px;padding:18px;display:flex;flex-direction:column;gap:9px;background:white;transition:box-shadow .15s,transform .15s}.event-card:hover{box-shadow:0 8px 25px #28335512;transform:translateY(-2px)}.event-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.badge{display:inline-block;border-radius:6px;padding:5px 8px;font-size:10px;font-weight:800;background:#edf2ff;color:#5564b9}.badge-체육{background:#e8efff;color:#4774ca}.badge-미술{background:#fff0e6;color:#d67b40}.badge-음악{background:#f0e9ff;color:#9066c9}.badge-무용{background:#e4f7f1;color:#2c9d7a}.badge-demo{background:#fff6df;color:#bd8c33}.favorite-btn{border:0;background:none;color:#bfc7d4;font-size:21px;line-height:1;padding:2px 4px}.favorite-btn.saved{color:#f19c47}.event-name{font-size:16px;line-height:1.45;font-weight:850;letter-spacing:-.3px;margin:3px 0 0}.event-sport{font-size:11px;color:#8a95a8;margin:0}.event-divider{border-top:1px solid #edf0f5;margin-top:3px}.event-detail-line{display:flex;gap:9px;color:#66728a;font-size:12px;line-height:1.5}.event-detail-line i{font-style:normal;width:17px;text-align:center;flex:none;color:#8f9bae}.event-bottom{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-top:auto;padding-top:6px}.deadline-pill{color:#af7a48;background:#fff5e9;font-weight:750;font-size:10px;border-radius:6px;padding:6px 9px}.deadline-pill.no-deadline{color:#96a0b1;background:#f4f6f9}.card-detail-btn{border:0;background:none;color:var(--blue);font-size:11px;font-weight:850;padding:7px 0}.empty-state{text-align:center;padding:78px 20px}.empty-state>div{font-size:43px;margin-bottom:18px}.empty-state strong{font-size:17px}.empty-state p{color:#919bad;font-size:12px;margin-bottom:20px}.map-wrap{height:530px;border-radius:11px;overflow:hidden;position:relative;background:#eef2f8}.map-wrap #map{height:100%;width:100%}.map-error{position:absolute;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:#f5f6fb;color:#6d7593}.map-footnote{font-size:11px;color:#8c96a7;line-height:1.5;margin:12px 0 0}.map-popup-title{font-weight:800;margin-bottom:8px;font-size:13px}.map-popup-note{font-size:11px;color:#66728a;margin-bottom:8px}.map-popup-button{border:0;color:#6255db;background:#f2efff;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:800}.calendar-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:13px}.calendar-toolbar h3{font-size:18px;flex:1;margin:0 6px}.calendar-toolbar>button{border:1px solid #e7eaf2;background:white;border-radius:8px;min-width:31px;height:31px;color:#5e6880;font-size:22px}.calendar-toolbar>.calendar-today{font-size:11px;font-weight:750;padding:0 10px}.calendar-legend{display:flex;justify-content:end;gap:16px;font-size:11px;color:#8f97a8;margin:0 0 12px}.calendar-legend span{display:flex;align-items:center;gap:6px}.calendar-legend i{display:inline-block;width:8px;height:8px;border-radius:2px}.legend-event{background:#7367e2}.legend-deadline{background:#f3a257}.calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.calendar-weekdays{border:1px solid #e7eaf2;border-radius:9px 9px 0 0;background:#f7f8fc}.calendar-weekdays span{text-align:center;font-size:11px;font-weight:750;color:#7a8599;padding:11px 0}.calendar-weekdays span:first-child{color:#d98383}.calendar-grid{border-left:1px solid #e7eaf2;border-top:0}.calendar-day{border-right:1px solid #e7eaf2;border-bottom:1px solid #e7eaf2;min-height:104px;padding:8px 6px;overflow:hidden;background:white}.calendar-day:nth-last-child(-n+7){border-bottom:1px solid #e7eaf2}.calendar-day.outside{background:#fafbfe}.calendar-day.outside .day-number{color:#c0c7d3}.calendar-day.today{background:#f5f3ff}.day-number{display:block;font-size:11px;font-weight:800;color:#6e7a90;margin:0 0 7px;padding:2px 5px;max-width:max-content}.today .day-number{background:#6f61df;color:white;border-radius:5px}.calendar-item{border:0;width:100%;text-align:left;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:3px 0;padding:5px 4px;border-radius:4px;font-size:10px;font-weight:700;color:#5b4ec2;background:#efedff}.calendar-item.deadline{background:#fff0e0;color:#b97834}.calendar-more{border:0;background:transparent;color:#758198;font-size:10px;font-weight:750;padding:3px;display:block}.calendar-empty{padding:8px;color:#8892a6;font-size:11px}footer{display:flex;justify-content:space-between;gap:15px;color:#9ba5b7;font-size:11px;padding:32px 0 28px;margin-top:35px;border-top:1px solid #e8ecf3}footer span:first-child{color:#6456cd;font-weight:800}footer b{font-size:9px;background:#f1efff;padding:2px 5px;border-radius:4px}.modal-backdrop{position:fixed;inset:0;background:#11192d99;z-index:2000;display:grid;place-items:center;padding:20px;overflow-y:auto}.modal{background:white;border-radius:19px;position:relative;width:min(100%,570px);max-height:calc(100vh - 38px);overflow-y:auto;box-shadow:0 15px 70px #15183144;padding:29px}.detail-modal{width:min(100%,520px)}.modal-close{position:absolute;top:17px;right:17px;width:33px;height:33px;display:grid;place-items:center;border:0;background:#f2f4fa;color:#6b7486;border-radius:9px;font-size:22px;z-index:1}.modal h2{font-size:23px;letter-spacing:-.6px;margin:7px 0}.modal-desc{color:#8993a5;font-size:12px;line-height:1.6;margin:5px 0 21px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-grid label{font-size:12px;font-weight:750;color:#485571;display:flex;flex-direction:column;gap:7px}.form-grid .full{grid-column:1/-1}.form-grid textarea{resize:vertical}.form-grid input,.form-grid select,.form-grid textarea{font-weight:500;font-size:13px}.required{color:#dd6a6a}.form-help{color:#949cac;font-size:11px;line-height:1.5;margin:-4px 0 1px}.form-error{color:#d74a54;font-size:12px;line-height:1.5;min-height:0}.form-actions{display:flex;justify-content:end;gap:10px;margin-top:21px}.detail-header{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px}.detail-heading{font-size:25px!important;line-height:1.4;margin:0 23px 9px 0!important}.detail-subheading{color:#8e9aaf;font-size:12px;margin:0 0 20px}.detail-rows{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 0;margin:15px 0}.detail-row{display:grid;grid-template-columns:103px 1fr;gap:10px;padding:10px 0;font-size:12px}.detail-row label{color:#9aa4b5}.detail-row span{color:#42506b;font-weight:650;overflow-wrap:anywhere}.detail-description{white-space:pre-wrap;color:#5d6981;line-height:1.8;font-size:13px}.detail-action-row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:23px}.button-danger{color:#cb4f62;background:#fff0f1}.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,20px);background:#263152;color:white;padding:13px 21px;border-radius:11px;z-index:3000;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:min(90vw,500px);font-size:12px;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:980px){.hero-art{right:-90px;opacity:.7}.hero-content{max-width:510px}.workspace{grid-template-columns:220px minmax(0,1fr)}.summary{grid-template-columns:repeat(2,1fr)}.card-grid{grid-template-columns:1fr}.results{padding:18px}.hero{padding:37px 36px}}
+@media(max-width:720px){.topbar{height:70px;padding:0 16px}.header-subtitle{display:none}.content{padding:0 15px}.hero{min-height:315px;padding:30px 22px}.hero h1{font-size:29px}.hero-content{max-width:100%}.hero p{font-size:12px}.hero-art{opacity:.22;right:-185px}.summary{gap:9px;margin-bottom:32px}.stat{padding:13px 11px;gap:9px}.stat-icon{width:38px;height:38px;font-size:18px}.stat strong{font-size:22px}.stat-label{font-size:10px}.section-heading{align-items:stretch;flex-direction:column}.mode-tabs{align-self:stretch}.mode-tab{flex:1}.workspace{grid-template-columns:1fr;gap:13px}.filters{padding:15px}.category-group{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.category-button{flex-direction:column;justify-content:center;gap:4px;padding:9px 2px;text-align:center;font-size:10px}.category-button span{width:auto}.filter-divider{margin:14px 0}.results-toolbar{flex-wrap:wrap}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.event-card{padding:12px;min-height:222px}.event-name{font-size:14px}.event-detail-line{font-size:11px}.badge{font-size:9px;padding:4px 5px}.deadline-pill{font-size:9px}.card-detail-btn{font-size:10px}.map-wrap{height:450px}.calendar-day{min-height:79px;padding:5px 2px}.calendar-item{font-size:9px;padding:3px 1px}.calendar-weekdays span{font-size:10px}.demo-banner{align-items:start;flex-wrap:wrap}.switchline{margin-left:auto}.modal{padding:22px}.form-grid{gap:10px}.form-grid label{font-size:11px}footer{display:block;line-height:2.2}}
+@media(max-width:480px){.brand-name{font-size:19px}.brand-beta{display:none}.header-right .button{padding:9px 11px}.hero-actions{flex-wrap:wrap}.hero h1{font-size:27px}.card-grid{grid-template-columns:1fr}.event-card{min-height:209px}.results{padding:14px}.results-toolbar h3{font-size:14px}.button-quiet{font-size:11px;padding:8px}.calendar-day{min-height:73px}.calendar-item{font-size:8px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.calendar-toolbar h3{font-size:16px}.detail-row{grid-template-columns:85px 1fr}}
+@media(max-width:720px){.hero-art{display:none}}
+
+
+/* V0.2 종목 기반 준비물 추천: 기존 V0.1 스타일과 충돌하지 않도록 신규 클래스만 사용 */
+.reco-section{margin-top:22px;padding:19px;border:1px solid #e9e5fd;border-radius:14px;background:linear-gradient(140deg,#fbfaff,#f6f7ff)}
+.reco-top{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}
+.reco-title{font-weight:850;font-size:16px;color:#40388e;letter-spacing:-.4px}
+.reco-tag{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;background:#e9e4ff;color:#6d5ac1}
+.reco-intro{font-size:12px;color:#6c7590;line-height:1.6;margin:9px 0 14px}
+.reco-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.reco-product{padding:13px;border-radius:12px;background:white;border:1px solid #eceefa;display:flex;align-items:flex-start;gap:9px}
+.reco-emoji{width:33px;min-width:33px;height:33px;display:grid;place-items:center;background:#f1efff;border-radius:10px;font-size:18px}
+.reco-name{font-weight:800;color:#34415f;font-size:12px;line-height:1.3}
+.reco-why{font-size:11px;color:#8a93a6;line-height:1.5;margin-top:5px}
+.reco-small{font-size:11px;color:#8e90a6;line-height:1.6;margin:14px 0 0}
+@media (max-width:560px){.reco-section{padding:13px}.reco-grid{grid-template-columns:1fr}}
+
+/* V0.3.1: readable controls and source/status indicators. */
+body{font-size:16px}.hero p,.section-heading p,.demo-banner,.field-label,.category-button,.filter-check,.filters>select,.search-box input,.button-quiet,.event-detail-line,.event-sport,.badge,.deadline-pill,.card-detail-btn,.detail-row,.detail-subheading,.modal-desc,.form-grid label,.form-help,.form-error,.reco-intro,.reco-name,.reco-why{font-size:14px}
+.sidebar-note,.results-toolbar p,.stat-label,.map-footnote,.reco-small,footer{font-size:13px}.event-name{font-size:18px}.event-card{gap:12px}.card-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}.results-toolbar{flex-wrap:wrap}.data-tools{flex-wrap:wrap}.sort-row{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin:0 0 18px;font-size:14px}.sort-row select{border:1px solid var(--line);border-radius:9px;background:white;padding:10px 30px 10px 12px;color:var(--ink);max-width:100%}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%2366728a' stroke-width='1.5'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 8px center!important;padding-right:30px!important}.badge-source{background:#e8f6f0;color:#237656}.badge-custom{background:#eef1f6;color:#546378}.status-open{background:#e7f7ee;color:#177146}.status-closed,.status-ended{background:#eff1f5;color:#647086}.status-soon{background:#edf0ff;color:#5149b0}.status-today{background:#fff0db;color:#9d5b0b}.source-meta{font-size:13px;color:#66728a;line-height:1.65}.event-bottom{align-items:flex-start;flex-wrap:wrap}.event-eligibility{font-size:14px;color:#4d5870;margin:0;line-height:1.6}.event-warning{font-size:13px;color:#92602a;line-height:1.6;margin:0}.detail-row span{white-space:pre-line}.detail-note{padding:12px;background:#fff7e8;border:1px solid #f5dfb8;border-radius:10px;font-size:14px;line-height:1.7;color:#79552c}.source-links{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.source-links a{font-size:14px;color:var(--blue)}.detail-action-row>div{display:flex;gap:8px;flex-wrap:wrap}.form-grid input,.form-grid select,.form-grid textarea{font-size:16px}.form-grid{gap:17px}.modal{width:min(100%,650px)}.detail-modal{width:min(100%,620px)}.detail-description{font-size:16px}.reco-small{line-height:1.7}.reco-tag{font-size:13px}.reco-product{align-items:flex-start}.calendar-item,.calendar-weekdays span,.day-number,.calendar-more{font-size:14px}.calendar-day{min-height:120px}.calendar-legend{font-size:13px;flex-wrap:wrap}.calendar-today{font-size:14px!important}.calendar-toolbar h3{font-size:20px}.calendar-scroll{overflow-x:auto}.calendar-weekdays,.calendar-grid{min-width:600px}.form-actions,.hero-actions{flex-wrap:wrap}.empty-state .button{margin:5px}.topbar{min-height:82px;height:auto;padding-top:18px;padding-bottom:18px}.brand-beta{font-size:11px}.stat-icon{flex-shrink:0}.button{min-height:42px}.favorite-btn{min-width:36px;min-height:36px}.form-help{margin:0}.reco-why{line-height:1.6}
+@media(max-width:720px){.card-grid{grid-template-columns:1fr}.category-button{font-size:13px}.hero p{font-size:15px}.stat-label{font-size:12px}.brand-beta{display:none}.event-card{padding:17px}.form-grid label{font-size:14px}.button-small{font-size:14px}.data-tools{width:100%}.sort-row{justify-content:flex-start}.calendar-day{min-height:110px}.hero{min-height:280px}.reco-grid{grid-template-columns:1fr}.detail-row{grid-template-columns:90px 1fr}.calendar-scroll{margin-right:-2px}}
+.form-grid .midnight-check{flex-direction:row;align-items:center;gap:9px}.form-grid .midnight-check input{width:18px;height:18px;accent-color:var(--blue)}
+.location-controls .button,.location-controls select,.text-button,.button-small{font-size:14px}.sidebar-note,.results-toolbar p,.map-footnote{color:#68758c}
+@media(max-width:720px){.demo-banner>span:nth-child(2){flex:1 1 calc(100% - 40px)}.demo-banner .switchline{margin-left:26px}.location-controls .button{font-size:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="모아대회 홈">
+        <span class="brand-mark" aria-hidden="true">✳</span>
+        <div><span class="brand-name">모아대회</span><span class="brand-beta">BETA 0.3.1 · 실제 공고 7건</span></div>
+      </div>
+      <div class="header-right">
+        <span class="header-subtitle">예체능 대회, 한눈에 찾기</span>
+        <button class="button button-primary button-small" id="addOpenBtn" type="button">＋ 대회 등록</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <div class="hero-content">
+          <div class="eyebrow"><span class="pulse-dot"></span> 우리 주변의 새로운 도전</div>
+          <h1>참가하고 싶은 대회,<br><span>여기서 찾아보세요.</span></h1>
+          <p>체육, 미술, 음악 대회 정보를 한곳에서. 관심 종목을 찾고, 지도에서 확인하고, 일정까지 챙겨보세요.</p>
+          <div class="hero-actions">
+            <button class="button button-white" id="heroExploreBtn" type="button">대회 둘러보기</button>
+            <button class="button button-hero-outline" id="heroMapBtn" type="button">지도로 보기 <span aria-hidden="true">⌖</span></button>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <span class="art-star star-a">✦</span><span class="art-star star-b">✧</span>
+          <div class="art-ticket ticket-one"><span>🏆</span><small>SPORTS</small></div>
+          <div class="art-ticket ticket-two"><span>🎨</span><small>ART &amp; DESIGN</small></div>
+          <div class="art-ticket ticket-three"><span>🎵</span><small>MUSIC</small></div>
+        </div>
+      </section>
+
+      <div class="demo-banner" role="note">
+        <span aria-hidden="true">ⓘ</span>
+        <span><strong>실제 대회·공모전 7건을 담았습니다.</strong> 마지막 확인 <b>2026. 11. 20.</b> · 접수 상태는 한국시간과 공고 일정 기준이에요. 정원·변경 사항은 공식 안내에서 확인하세요.</span>
+        <label class="switchline"><input id="demoToggle" type="checkbox" /> 가상 예시도 보기</label>
+      </div>
+
+      <section class="summary" aria-label="대회 현황">
+        <div class="stat"><span class="stat-icon">▦</span><div><span class="stat-label">전체 대회</span><strong id="statTotal">0</strong></div></div>
+        <div class="stat"><span class="stat-icon stat-purple">◷</span><div><span class="stat-label">진행·예정 대회</span><strong id="statUpcoming">0</strong></div></div>
+        <div class="stat"><span class="stat-icon stat-orange">◎</span><div><span class="stat-label">지도 표시 가능</span><strong id="statLocated">0</strong></div></div>
+        <div class="stat"><span class="stat-icon stat-green">✚</span><div><span class="stat-label">직접 등록한 대회</span><strong id="statMy">0</strong></div></div>
+      </section>
+
+      <section class="discover" id="discover">
+        <div class="section-heading">
+          <div><div class="section-kicker">EXPLORE EVENTS</div><h2>대회 탐색하기</h2><p>관심 있는 대회를 원하는 방식으로 찾아보세요.</p></div>
+          <div class="mode-tabs" role="tablist" aria-label="대회 보기 방식">
+            <button class="mode-tab active" type="button" role="tab" id="tab-list" data-view="list" aria-selected="true">☷ <span>목록</span></button>
+            <button class="mode-tab" type="button" role="tab" id="tab-map" data-view="map" aria-selected="false">⌖ <span>지도</span></button>
+            <button class="mode-tab" type="button" role="tab" id="tab-calendar" data-view="calendar" aria-selected="false">▦ <span>캘린더</span></button>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <aside class="filters" aria-label="대회 검색 조건">
+            <div class="filter-head"><h3>검색 및 필터</h3><button type="button" class="text-button" id="resetFiltersBtn">초기화</button></div>
+            <label class="field-label" for="searchInput">키워드 검색</label>
+            <div class="search-box"><span aria-hidden="true">⌕</span><input type="search" id="searchInput" placeholder="대회명, 종목, 참가 대상" autocomplete="off" /></div>
+            <div class="filter-divider"></div>
+            <p class="field-label">분야 선택</p>
+            <div class="category-group" id="categoryButtons">
+              <button type="button" class="category-button selected" data-category="all"><span>✦</span> 전체 분야</button>
+              <button type="button" class="category-button" data-category="체육"><span>🏃</span> 체육</button>
+              <button type="button" class="category-button" data-category="미술"><span>🎨</span> 미술</button>
+              <button type="button" class="category-button" data-category="음악"><span>🎼</span> 음악</button>
+              <button type="button" class="category-button" data-category="무용"><span>💃</span> 무용</button>
+            </div>
+            <div class="filter-divider"></div>
+            <label class="field-label" for="regionInput">지역</label>
+            <select id="regionInput"><option value="all">모든 지역</option><option value="경기">경기</option><option value="서울">서울</option><option value="인천">인천</option><option value="그 외">그 외 지역</option><option value="온라인">온라인</option></select>
+            <label class="filter-check"><input type="checkbox" id="upcomingOnly" checked /> 종료된 대회 숨기기</label>
+            <label class="filter-check"><input type="checkbox" id="openOnly" /> 접수기간 중인 대회만</label>
+            <label class="filter-check"><input type="checkbox" id="favoritesOnly" /> 관심 대회만</label>
+            <p class="sidebar-note">접수기간과 잔여 정원은 다를 수 있어요. 지역 필터는 대회 개최지 기준입니다.</p>
+            <div class="filter-divider"></div>
+            <p class="field-label">내 주변 대회</p>
+            <div class="location-controls">
+              <button class="button button-subtle" id="locateBtn" type="button">◎ 현재 위치 확인</button>
+              <label for="radiusSelect" class="sr-only">검색 반경</label>
+              <select id="radiusSelect"><option value="10">10 km</option><option value="30" selected>30 km</option><option value="50">50 km</option><option value="100">100 km</option></select>
+            </div>
+            <label class="filter-check"><input type="checkbox" id="nearOnly" disabled /> 선택한 거리 안의 대회만</label>
+            <p id="locationNote" class="sidebar-note">위치 권한을 허용하면 이 기기에서 가까운 대회를 계산해요. 좌표가 확인된 대회만 검색됩니다.</p>
+          </aside>
+
+          <div class="results">
+            <div class="results-toolbar"><div><h3 id="viewTitle">대회 목록 <span id="resultCount">0</span></h3><p id="resultsSubtext">관심 있는 대회를 찾아보세요.</p></div><div class="data-tools"><button type="button" class="button button-quiet" id="importBtn" title="저장된 JSON 파일로 대회 등록">가져오기</button><button type="button" class="button button-quiet" id="exportBtn" title="직접 등록한 대회를 JSON으로 저장">내보내기</button></div></div>
+            <div class="sort-row"><label for="sortSelect">정렬</label><select id="sortSelect"><option value="date">일정순</option><option value="deadline">접수 마감순</option><option value="title">이름순</option><option value="distance" id="distanceOption" disabled>가까운순 (위치 확인 필요)</option></select></div>
+            <div id="listView" class="view-panel" role="tabpanel" aria-labelledby="tab-list"><div class="card-grid" id="cardGrid"></div></div>
+            <div id="mapView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-map"><div class="map-wrap"><div id="map" aria-label="대회 개최 장소 지도"></div><div id="mapError" class="map-error hidden">지도 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하세요.</div></div><p id="mapFootnote" class="map-footnote">※ 정확한 좌표가 입력된 오프라인 대회만 표시됩니다.</p></div>
+            <div id="calendarView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-calendar"><div class="calendar-toolbar"><button id="monthPrev" type="button" aria-label="이전 달">‹</button><h3 id="monthLabel">2026년 11월</h3><button id="monthNext" type="button" aria-label="다음 달">›</button><button type="button" class="calendar-today" id="monthToday">오늘</button></div><div class="calendar-legend"><span><i class="legend-event"></i> 개최일</span><span><i class="legend-deadline"></i> 신청 마감일</span></div><div class="calendar-scroll"><div class="calendar-weekdays"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="calendar-grid" id="calendarGrid"></div></div></div>
+            <div id="emptyState" class="empty-state hidden"><div>🔎</div><strong>조건에 맞는 대회가 없어요.</strong><p>필터를 초기화하거나 종료된 대회 숨기기를 꺼보세요.<br>직접 대회를 등록하거나 가상 예시로 기능을 둘러볼 수도 있어요.</p><button type="button" class="button button-subtle" id="emptyResetBtn">필터 초기화</button> <button type="button" class="button button-primary" id="emptyAddBtn">＋ 대회 등록하기</button></div>
+          </div>
+        </div>
+      </section>
+
+      <footer><span>✳ 모아대회 <b>V0.3.1</b></span><span>학교 프로젝트 · 실제 대회는 주최 기관의 공식 공지를 반드시 확인하세요.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="detailBackdrop" aria-hidden="true"><div class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><button class="modal-close" id="detailClose" aria-label="닫기" type="button">×</button><div id="detailContent"></div></div></div>
+
+  <div class="modal-backdrop hidden" id="formBackdrop" aria-hidden="true"><div class="modal form-modal" role="dialog" aria-modal="true" aria-labelledby="formTitle"><button class="modal-close" id="formClose" type="button" aria-label="닫기">×</button><div class="modal-kicker">ADD AN EVENT</div><h2 id="formTitle">새 대회 등록</h2><p class="modal-desc">직접 등록한 대회는 이 브라우저에만 저장됩니다. 나중에 JSON으로 내보낼 수 있어요.</p><form id="eventForm"><div class="form-grid"><label class="full">대회명 <span class="required">*</span><input name="title" required maxlength="90" placeholder="예: 제○회 ○○ 미술대회" /></label><label>분야 <span class="required">*</span><select name="category" required><option value="체육">체육</option><option value="미술">미술</option><option value="음악">음악</option><option value="무용">무용</option></select></label><label>세부 종목 <span class="required">*</span><input name="sport" required maxlength="40" placeholder="예: 배드민턴, 회화" /></label><label><span id="eventDateLabelText">개최일 (필수)</span><input name="startDate" required type="date" aria-describedby="eventDateHelp" /></label><label>종료일 (여러 날인 경우)<input name="endDate" type="date" /></label><p class="full form-help" id="eventDateHelp">오프라인 대회는 공식 개최일을 입력하세요. 접수 마감일과 구분해 주세요.</p><label>접수 시작일<input name="registrationStart" type="date" /></label><label>신청 마감일<input name="deadline" type="date" /></label><label>마감 시각 (한국시간)<input name="deadlineTime" type="time" /></label><label class="full midnight-check"><input name="deadlineMidnight" type="checkbox" /> 마감일 24:00 (다음 날 00:00)에 마감</label><p class="full form-help">마감 시각을 모르면 비워두세요. 시각이 없는 마감일에는 접수 여부를 공식 안내에서 확인하도록 표시합니다.</p><label class="full">참가 대상<input name="eligibility" maxlength="300" placeholder="예: 고등학생, 만 19세 이상, 누구나" /></label><label>진행 방식<select name="mode" id="eventMode"><option value="offline">오프라인</option><option value="online">온라인</option></select></label><label>지역 <span class="required">*</span><select name="region" required id="eventRegion"><option value="경기">경기</option><option value="서울">서울</option><option value="인천">인천</option><option value="부산">부산</option><option value="대구">대구</option><option value="대전">대전</option><option value="광주">광주</option><option value="울산">울산</option><option value="세종">세종</option><option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option><option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option><option value="경남">경남</option><option value="제주">제주</option><option value="온라인">온라인</option></select></label><label class="full">장소 / 주소<input name="venue" id="eventVenue" maxlength="150" placeholder="예: ○○시민체육관" /></label><label>위도 (선택)<input name="lat" type="number" min="-90" max="90" step="any" placeholder="예: 37.2636" /></label><label>경도 (선택)<input name="lng" type="number" min="-180" max="180" step="any" placeholder="예: 127.0286" /></label><p class="full form-help">지도에 표시하려면 장소의 정확한 위도·경도를 둘 다 입력해야 합니다. 좌표를 확인하지 못했다면 비워두세요. 장소명을 임의의 좌표로 바꾸지 않습니다.</p><label class="full">공식 안내 URL<input name="url" type="url" placeholder="https://..." /></label><label class="full">출처 / 주최 기관<input name="source" maxlength="100" placeholder="예: ○○시체육회" /></label><label class="full">설명<textarea name="description" rows="3" maxlength="800" placeholder="참가 자격, 준비물, 신청 방법 등을 간단히 적어주세요."></textarea></label></div><p id="formError" class="form-error" role="alert"></p><div class="form-actions"><button type="button" class="button button-subtle" id="formCancel">취소</button><button type="submit" class="button button-primary" id="formSubmit">대회 저장하기</button></div></form></div></div>
+  <input type="file" id="importFile" accept=".json,application/json" hidden />
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="officialEventsData">
+[
+  {
+    "id": "official-donga-musical-2026",
+    "title": "2026 동아뮤지컬콩쿠르",
+    "category": "음악",
+    "sport": "뮤지컬",
+    "region": "서울",
+    "venue": "강동아트센터 · 서울 강동구 동남로 870 (예선: 소극장 드림 / 본선: 대극장 한강)",
+    "startDate": "2026-12-08",
+    "endDate": "2027-01-11",
+    "registrationStart": "2026-10-26",
+    "deadline": "2026-11-27",
+    "registrationOpensAt": "2026-10-26T10:00:00+09:00",
+    "registrationClosesAt": "2026-11-28T00:00:00+09:00",
+    "mode": "offline",
+    "lat": null,
+    "lng": null,
+    "source": "동아뮤지컬콩쿠르 공식 요강",
+    "url": "https://dongamusical.com/about-concours/about-donga-musical-concours/",
+    "checkedAt": "2026-11-20",
+    "eligibility": "초등·중등·고등·대학/일반부. 재학생은 2026년 재학 학교급 기준. 고등부 비재학생은 2008~2010년생.",
+    "eligibilityShort": "초등·중등·고등·대학/일반부",
+    "registrationNote": "공고 표기: 11월 27일 자정 마감. 신청 페이지의 최종 접수 가능 여부를 확인하세요.",
+    "fee": "150,000원",
+    "description": "예선은 12월 8~10일, 본선은 2027년 1월 11일입니다. 예선 합격자만 본선에 참가합니다. 온라인 신청 후 참가비 결제가 필요합니다.",
+    "schedules": [
+      {
+        "label": "예선",
+        "startDate": "2026-12-08",
+        "endDate": "2026-12-10"
+      },
+      {
+        "label": "본선",
+        "startDate": "2027-01-11",
+        "endDate": "2027-01-11"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "공식 장소·교통 안내",
+        "url": "https://www.gdfac.or.kr/home/display/region/content/JSVFRWpvUW1RQjZNU21QelgrOW1mSEZtY3ljVG1hU0JISWt0ZU1ZTGQxRmdtVT0="
+      }
+    ]
+  },
+  {
+    "id": "official-climbing-2026-gg",
+    "title": "2026 청소년스포츠한마당 스포츠클라이밍대회 · 경기 접수",
+    "category": "체육",
+    "sport": "스포츠클라이밍",
+    "region": "서울",
+    "venue": "서울숲클라이밍센터 구로점",
+    "startDate": "2026-11-28",
+    "endDate": "2026-11-28",
+    "registrationStart": "",
+    "deadline": "2026-11-19",
+    "registrationOpensAt": "",
+    "registrationClosesAt": "2026-11-19T11:00:00+09:00",
+    "mode": "offline",
+    "lat": null,
+    "lng": null,
+    "source": "경기도산악연맹 · 대한산악연맹",
+    "url": "https://gg.kaf.or.kr/board/forum_01/read/2660",
+    "sourceLinks": [
+      {
+        "label": "대회 일정·참가 부문",
+        "url": "https://kaf.or.kr/notice/?bmode=view&idx=175752232"
+      }
+    ],
+    "checkedAt": "2026-11-20",
+    "eligibility": "초등 고학년·중학생·고등학생 및 같은 연령 청소년. 고등부는 2008~2010년생. 학생선수와 일반학생의 팀 구성 등 세부 요강을 확인하세요.",
+    "eligibilityShort": "초등 고학년·중등·고등부",
+    "registrationNote": "이 카드의 마감은 경기도 참가자의 서류 제출 마감입니다. 서울 등 다른 지역은 해당 시·도연맹 공고를 확인하세요. 중앙연맹의 취합 마감과 다릅니다.",
+    "fee": "무료 (경기도산악연맹 공고)",
+    "description": "11월 28일 서울에서 개최되며 이 카드는 경기도 참가자의 접수 공고입니다. 경기도 서류 접수는 11월 19일 오전 11시에 마감됐습니다. 다른 지역 접수는 해당 시·도연맹 안내를 확인하세요.",
+    "schedules": []
+  },
+  {
+    "id": "official-fencing-2026",
+    "title": "2026년 펜싱 청소년스포츠한마당",
+    "category": "체육",
+    "sport": "펜싱",
+    "region": "전북",
+    "venue": "익산실내체육관 · 전북특별자치도 익산시 무왕로 1397",
+    "startDate": "2026-12-13",
+    "endDate": "2026-12-13",
+    "registrationStart": "2026-11-02",
+    "deadline": "2026-11-27",
+    "registrationOpensAt": "2026-11-02T09:00:00+09:00",
+    "registrationClosesAt": "2026-11-27T18:00:00+09:00",
+    "mode": "offline",
+    "lat": null,
+    "lng": null,
+    "source": "대한펜싱협회 공식 대회 공고",
+    "url": "https://fencing.sports.or.kr/game/compListView?code=game&eventCd=COMPM00736&gubun=2&pageNum=1",
+    "checkedAt": "2026-11-20",
+    "eligibility": "초등부 U-12·중등부 U-15. 팀당 학생선수 2명과 일반학생 2명으로 구성하는 단체전. 고등부 공고가 아닙니다.",
+    "eligibilityShort": "초등·중등부 · 고등부 없음",
+    "registrationNote": "종목별 선착순 접수입니다. 공고상 기간 중이어도 정원이 찼을 수 있어 협회에 접수 여부를 확인해야 합니다.",
+    "fee": "공식 참가요강 확인",
+    "description": "남녀 플러레·에뻬·사브르 단체전입니다. 참가신청서와 필수 서류 제출이 필요합니다. 12월 12일 장비검사 등 사전 일정은 공식 요강을 확인하세요.",
+    "schedules": [],
+    "sourceLinks": [
+      {
+        "label": "공식 장소·교통 안내",
+        "url": "https://www.iksancmc.or.kr/index.iksan?menuCd=DOM_000000102005004000"
+      }
+    ]
+  },
+  {
+    "id": "official-yu-design-2026",
+    "title": "2026 영남대학교 전국 고등학생 디자인·미술 실기대회",
+    "category": "미술",
+    "sport": "디자인·미술",
+    "region": "그 외",
+    "venue": "공식 고사실 안내 확인",
+    "startDate": "2026-06-27",
+    "endDate": "2026-06-28",
+    "registrationStart": "2026-05-18",
+    "deadline": "2026-06-05",
+    "registrationOpensAt": "2026-05-18T09:00:00+09:00",
+    "registrationClosesAt": "2026-06-06T00:00:00+09:00",
+    "mode": "offline",
+    "lat": null,
+    "lng": null,
+    "source": "영남대학교 디자인미술대학 공지",
+    "url": "https://www.yu.ac.kr/designart/notice/notice.do?articleNo=229529263&mode=view",
+    "checkedAt": "2026-11-20",
+    "eligibility": "고교 재학생, 2025년 1월 이후 고교 졸업자 또는 고교 졸업 동등 학력자. 대학 재학생은 지원할 수 없습니다.",
+    "eligibilityShort": "고교 재학생·일부 졸업자·동등 학력자",
+    "registrationNote": "2026년 대회는 종료됐습니다. 다음 대회의 일정으로 재사용하면 안 됩니다.",
+    "fee": "일반 종목 45,000원 / 인체두상소조 60,000원 · 대행 수수료 5,000원 별도",
+    "description": "기초디자인·상황표현은 6월 27일, 그 외 종목은 6월 28일에 진행된 대회입니다. 종료된 실제 대회 기록으로, 앞으로 열리는 대회만 필터를 끄면 볼 수 있습니다.",
+    "schedules": [
+      {
+        "label": "기초디자인·상황표현",
+        "startDate": "2026-06-27",
+        "endDate": "2026-06-27"
+      },
+      {
+        "label": "그 외 종목",
+        "startDate": "2026-06-28",
+        "endDate": "2026-06-28"
+      }
+    ]
+  },
+  {
+    "id": "official-mofa-poster-2026",
+    "title": "2026 한·중·일 3국 초·중·고 포스터 공모전",
+    "category": "미술",
+    "sport": "포스터·디지털 일러스트",
+    "region": "온라인",
+    "venue": "온라인 작품 접수",
+    "startDate": "",
+    "endDate": "",
+    "registrationStart": "2026-10-26",
+    "deadline": "2026-11-29",
+    "registrationOpensAt": "",
+    "registrationClosesAt": "2026-11-29T23:59:00+09:00",
+    "mode": "online",
+    "lat": null,
+    "lng": null,
+    "source": "대한민국 외교부 공식 공고",
+    "url": "https://www.mofa.go.kr/www/brd/m_4075/view.do?seq=369465",
+    "sourceLinks": [
+      {
+        "label": "공식 공모요강·접수 안내",
+        "url": "https://apac.spectory.net/tcs15kr/contest?bno=61539"
+      }
+    ],
+    "checkedAt": "2026-11-20",
+    "eligibility": "한국·중국·일본 국적의 초·중·고등학생과 동일 연령 청소년. 1인 1작품.",
+    "eligibilityShort": "초등·중등·고등학생 및 동일 연령 청소년",
+    "registrationNote": "생성형 AI를 활용한 작품은 허용되지 않습니다. 제출 규격·동의서 등은 공식 접수 요강을 확인하세요.",
+    "fee": "확인한 공고에서 출품료 명시 없음 · 운영 사무국 확인",
+    "description": "손그림 또는 디지털 일러스트 포스터를 온라인으로 제출하는 공모전입니다. 한·중·일 교류와 협력의 미래가 주제이며 작품 설명도 함께 제출합니다. 별도 현장 경연일은 없습니다. 결과는 12월 중, 시상식·전시회는 12월 17일 예정으로 안내되어 있습니다.",
+    "schedules": []
+  },
+  {
+    "id": "official-seoul-character-2026",
+    "title": "서울미래인재재단 대표 캐릭터 공모전",
+    "category": "미술",
+    "sport": "캐릭터 디자인",
+    "region": "온라인",
+    "venue": "온라인 작품·서류 제출",
+    "startDate": "",
+    "endDate": "",
+    "registrationStart": "2026-11-16",
+    "deadline": "2026-11-30",
+    "registrationOpensAt": "2026-11-16T00:00:00+09:00",
+    "registrationClosesAt": "2026-11-30T23:59:00+09:00",
+    "mode": "online",
+    "lat": null,
+    "lng": null,
+    "source": "서울미래인재재단 · 서울시 공식 공모전 안내",
+    "url": "https://mediahub.seoul.go.kr/gongmo/2000792",
+    "sourceLinks": [
+      {
+        "label": "공식 공모요강·접수 안내",
+        "url": "https://sffcharacter.kr/once.html"
+      }
+    ],
+    "checkedAt": "2026-11-20",
+    "eligibility": "개인 또는 4인 이하 팀 누구나. 고등학생도 참가 가능하며 개인·팀당 1작품.",
+    "eligibilityShort": "누구나 · 개인 또는 4인 이하 팀",
+    "registrationNote": "결과 발표는 12월 10일 예정이며 경연 개최일이 아닙니다. 제출 양식과 작품 활용 조건을 공식 요강에서 확인하세요.",
+    "fee": "확인한 공고에서 출품료 명시 없음 · 운영 사무국 확인",
+    "description": "재단을 표현할 캐릭터의 기본 디자인, 이름과 이야기, 활용 아이디어를 온라인으로 제출합니다. 별도 현장 경연일은 없고, 결과는 2026년 12월 10일 예정으로 안내되어 있습니다.",
+    "schedules": []
+  },
+  {
+    "id": "official-deutsch-music-2026",
+    "title": "2026 제3회 도이치음협 콩쿠르",
+    "category": "음악",
+    "sport": "피아노·성악·관현악·실내악",
+    "region": "서울",
+    "venue": "세일아트홀 · 서울특별시 강남구 역삼동 727-13",
+    "startDate": "2026-12-05",
+    "endDate": "2026-12-05",
+    "registrationStart": "2026-09-19",
+    "deadline": "2026-11-29",
+    "registrationOpensAt": "",
+    "registrationClosesAt": "2026-11-29T17:00:00+09:00",
+    "mode": "offline",
+    "lat": null,
+    "lng": null,
+    "source": "(사)도이치음악협회 공식 공고",
+    "url": "https://www.deutschmv.com/%EB%8F%84%EC%9D%B4%EC%B9%98%EC%9D%8C%ED%98%91%EC%BD%A9%EC%BF%A0%EB%A5%B4%EB%A5%B4",
+    "checkedAt": "2026-11-20",
+    "eligibility": "초등·중등·고등·대학·일반·아마추어부. 재수생은 고등부, 홈스쿨 학생은 연령에 맞는 학년으로 지원. 아마추어부는 별도 연령·전공 제한 확인.",
+    "eligibilityShort": "초등·중등·고등·대학·일반·아마추어부",
+    "registrationNote": "경연 세부 시각은 12월 2일 19:00 공지 예정입니다. 반주 동반과 신분증 등 참가 조건을 공식 요강에서 확인하세요.",
+    "fee": "1곡 150,000원 / 2곡 200,000원 / 실내악 200,000원",
+    "description": "12월 5일 세일아트홀에서 진행되는 음악 콩쿠르입니다. 피아노·성악·관현악·실내악과 피아노 반주 부문이 안내되어 있습니다. 결과와 심사평은 12월 6일 발표 예정입니다. 반주자 연결이 필요한 경우 추가 비용이 안내되어 있으니 신청 전 확인하세요.",
+    "schedules": []
+  }
+]
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+/* 모아대회 V0.3.1 — 공식 출처를 확인한 내장 목록 + 개인 브라우저 저장.
+   자동 수집이나 잔여 정원 실시간 확인은 하지 않습니다. */
+(() => {
+  'use strict';
+  const STORAGE_EVENTS = 'moa-contests-v01-events';
+  const STORAGE_FAVS = 'moa-contests-v01-favorites';
+  const STORAGE_SHOW_DEMOS = 'moa-contests-v01-show-demos';
+  const $ = (id) => document.getElementById(id);
+  const seoulYmd = (value = new Date()) => {
+    const parts = new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Seoul', year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(value);
+    const part = key => parts.find(p=>p.type===key).value;
+    return `${part('year')}-${part('month')}-${part('day')}`;
+  };
+  let TODAY = seoulYmd();
+  let today = new Date(TODAY + 'T12:00:00');
+  const pad = (n) => String(n).padStart(2, '0');
+  const toYmd = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  const shiftDate = (days) => { const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + days); return toYmd(d); };
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const safeUrl = (value) => { try { const u = new URL(value); return ['https:', 'http:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
+  const dateOk = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && toYmd(new Date(value + 'T12:00:00')) === value;
+  const formatDate = (ymd, withYear = true) => { if (!dateOk(ymd)) return '미정'; const [y,m,d] = ymd.split('-'); return `${withYear ? y + '. ' : ''}${Number(m)}. ${Number(d)}.`; };
+  const CATEGORY_CLASS = {'체육':'체육','미술':'미술','음악':'음악','무용':'무용'};
+  const DEMOS = [
+    {id:'demo-1',title:'수원 청소년 배드민턴 챌린지 (가상)',category:'체육',sport:'배드민턴',region:'경기',venue:'수원시 일대 (가상 위치)',startDate:shiftDate(8),deadline:shiftDate(3),mode:'offline',lat:37.2636,lng:127.0286,source:'시연용 가상 데이터',description:'실제로 열리는 대회가 아닙니다. 목록, 캘린더, 지도를 테스트하기 위한 예시입니다.'},
+    {id:'demo-2',title:'청소년 창작 그림 공모전 (가상)',category:'미술',sport:'회화',region:'온라인',venue:'온라인 접수',startDate:shiftDate(14),deadline:shiftDate(10),mode:'online',lat:null,lng:null,source:'시연용 가상 데이터',description:'실제 공모전이 아닌 시연용 예시입니다. 온라인 대회는 지도에 표시되지 않습니다.'},
+    {id:'demo-3',title:'안양 생활체육 탁구 오픈 (가상)',category:'체육',sport:'탁구',region:'경기',venue:'안양시 일대 (가상 위치)',startDate:shiftDate(22),deadline:shiftDate(17),mode:'offline',lat:37.3943,lng:126.9568,source:'시연용 가상 데이터',description:'실제로 열리는 대회가 아닙니다. 지도 마커와 종목 검색 기능을 확인하세요.'},
+    {id:'demo-4',title:'청소년 피아노 음악제 (가상)',category:'음악',sport:'피아노',region:'서울',venue:'서울시 일대 (가상 위치)',startDate:shiftDate(30),deadline:shiftDate(23),mode:'offline',lat:37.5665,lng:126.9780,source:'시연용 가상 데이터',description:'실제 음악제가 아닌 가상 시연용 대회입니다.'},
+    {id:'demo-5',title:'경기도 청소년 농구 페스티벌 (가상)',category:'체육',sport:'농구',region:'경기',venue:'용인시 일대 (가상 위치)',startDate:shiftDate(42),deadline:shiftDate(33),mode:'offline',lat:37.3219,lng:127.1260,source:'시연용 가상 데이터',description:'실제 대회가 아닙니다. 위치 정보는 지도 기능을 시험하기 위한 예시 좌표입니다.'},
+    {id:'demo-6',title:'전국 디지털아트 공모전 (가상)',category:'미술',sport:'디지털아트',region:'온라인',venue:'온라인 접수',startDate:shiftDate(47),deadline:shiftDate(39),mode:'online',lat:null,lng:null,source:'시연용 가상 데이터',description:'실제 공모전이 아닌 시연용 예시입니다.'},
+    {id:'demo-7',title:'인천 청소년 스트릿댄스 페스타 (가상)',category:'무용',sport:'스트릿댄스',region:'인천',venue:'인천시 일대 (가상 위치)',startDate:shiftDate(57),deadline:shiftDate(49),mode:'offline',lat:37.4563,lng:126.7052,source:'시연용 가상 데이터',description:'실제 대회가 아닌 가상 예시입니다.'},
+    {id:'demo-8',title:'청소년 합창 경연대회 (가상)',category:'음악',sport:'합창',region:'경기',venue:'성남시 일대 (가상 위치)',startDate:shiftDate(67),deadline:shiftDate(56),mode:'offline',lat:37.4200,lng:127.1265,source:'시연용 가상 데이터',description:'실제 대회가 아닌 가상 예시입니다.'}
+  ].map(e => ({...e, endDate:e.startDate, registrationStart:shiftDate(-7), demo:true, official:false, url:''}));
+  const OFFICIAL_EVENTS = JSON.parse($('officialEventsData').textContent).map(e=>({...e,demo:false,official:true}));
+
+  function readSaved(key, fallback) { try { const raw = localStorage.getItem(key); return raw === null ? fallback : JSON.parse(raw); } catch { return fallback; } }
+  function persist(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { toast('브라우저 저장에 실패했어요. 저장 공간이나 보안 설정을 확인해 주세요.'); return false; } }
+  const newId = () => (globalThis.crypto && typeof crypto.randomUUID === 'function') ? crypto.randomUUID() : `local-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const localId = id => /^(official-|demo-)/.test(String(id)) ? `local-import-${id}` : String(id);
+  const timestampOk = value => /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:Z|[+-](?:0\d|1[0-4]):[0-5]\d)$/.test(value) && dateOk(value.slice(0,10)) && Number.isFinite(Date.parse(value));
+  function normalizedEvent(raw, id = newId()) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw Error('대회 데이터 형식이 올바르지 않습니다.');
+    const text = (key,max=300) => String(raw[key] || '').trim().slice(0,max);
+    const title=text('title',90),sport=text('sport',40),category=text('category',10);
+    const startDate=text('startDate',10),endDate=text('endDate',10)||startDate;
+    const deadline=text('deadline',10),registrationStart=text('registrationStart',10);
+    const mode = raw.mode === 'online' ? 'online' : 'offline';
+    if (!title || !sport || !Object.hasOwn(CATEGORY_CLASS,category) || (startDate && !dateOk(startDate))) throw Error('대회명, 분야, 종목, 개최일을 확인해 주세요.');
+    if (!startDate && mode==='offline') throw Error('오프라인 대회는 공식 개최일을 입력해 주세요.');
+    if (!startDate && !dateOk(deadline)) throw Error('개최일이 없는 온라인 공모전은 접수 마감일을 입력해 주세요.');
+    if (!startDate && endDate) throw Error('별도 개최 일정이 없다면 개최일과 종료일을 모두 비워 주세요.');
+    if (startDate && (!dateOk(endDate) || endDate < startDate)) throw Error('종료일은 개최일과 같거나 이후여야 합니다.');
+    if (deadline && (!dateOk(deadline) || (endDate && deadline > endDate))) throw Error('신청 마감일은 대회 종료일과 같거나 이전이어야 합니다.');
+    if (registrationStart && (!dateOk(registrationStart) || (deadline && registrationStart > deadline) || (endDate && registrationStart > endDate))) throw Error('접수 시작일과 마감일 순서를 확인해 주세요.');
+    const empty = value => value === '' || value === null || value === undefined;
+    const lat=empty(raw.lat)?null:Number(raw.lat),lng=empty(raw.lng)?null:Number(raw.lng);
+    if (mode==='offline' && ((lat!==null && (!Number.isFinite(lat)||lat< -90||lat>90)) || (lng!==null && (!Number.isFinite(lng)||lng< -180||lng>180)))) throw Error('좌표 범위가 올바르지 않습니다.');
+    if (mode==='offline' && (lat===null)!==(lng===null)) throw Error('위도와 경도는 둘 다 입력하거나 둘 다 비워 주세요.');
+    const url=text('url',2000);
+    if(url && !safeUrl(url)) throw Error('안내 주소는 http 또는 https 링크만 사용할 수 있습니다.');
+    let registrationClosesAt=text('registrationClosesAt',40);
+    const registrationOpensAt=text('registrationOpensAt',40),deadlineTime=text('deadlineTime',5);
+    if(raw.deadlineMidnight === true || raw.deadlineMidnight === 'on'){
+      if(!dateOk(deadline)) throw Error('24:00 마감에는 마감일을 입력해 주세요.');
+      const nextDay=seoulYmd(new Date(Date.parse(deadline+'T00:00:00+09:00')+86400000));
+      registrationClosesAt=nextDay+'T00:00:00+09:00';
+    } else if(deadlineTime){
+      if(!deadline || !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(deadlineTime)) throw Error('마감 시각과 마감일을 함께 확인해 주세요.');
+      registrationClosesAt=`${deadline}T${deadlineTime}:00+09:00`;
+    }
+    for(const stamp of [registrationOpensAt,registrationClosesAt]) if(stamp&&!timestampOk(stamp)) throw Error('접수 시각은 시간대가 포함된 올바른 ISO 날짜여야 합니다.');
+    if(registrationClosesAt && !deadline) throw Error('마감 시각이 있으면 마감일도 입력해 주세요.');
+    if(registrationOpensAt && registrationClosesAt && Date.parse(registrationOpensAt)>Date.parse(registrationClosesAt)) throw Error('접수 시작 시각이 마감보다 늦습니다.');
+    const schedules=Array.isArray(raw.schedules)?raw.schedules.slice(0,20).map(item=>{
+      const begin=String(item?.startDate||''),end=String(item?.endDate||begin);
+      if(!startDate||!dateOk(begin)||!dateOk(end)||begin>end||begin<startDate||end>endDate) throw Error('세부 일정 날짜를 확인해 주세요.');
+      return {label:String(item.label||'대회').slice(0,40),startDate:begin,endDate:end};
+    }):[];
+    return {id:localId(id),title,category,sport,startDate,endDate,deadline,registrationStart,registrationOpensAt,registrationClosesAt,mode,lat:mode==='online'?null:lat,lng:mode==='online'?null:lng,region:mode==='online'?'온라인':text('region',30)||'그 외',venue:mode==='online'?'온라인 접수':text('venue',150)||'장소 미정',url,source:text('source',100)||'출처 미기재',description:text('description',800),eligibility:text('eligibility'),registrationNote:text('registrationNote',500),fee:text('fee',150),schedules,demo:false,official:false};
+  }
+
+  const savedRaw = readSaved(STORAGE_EVENTS, []);
+  const custom = (Array.isArray(savedRaw) ? savedRaw : []).flatMap((raw) => { try { return [normalizedEvent(raw, String(raw.id || newId()))]; } catch { return []; } });
+  const savedFavs = readSaved(STORAGE_FAVS, []);
+  const favorites = new Set(Array.isArray(savedFavs) ? savedFavs.filter(x => typeof x === 'string') : []);
+  const state = {view:'list',category:'all',search:'',region:'all',upcoming:true,openOnly:false,sort:'date',favoritesOnly:false,showDemos:readSaved(STORAGE_SHOW_DEMOS,false)===true,position:null,radius:30,nearOnly:false,dayFilter:'',calendarDate:new Date(today.getFullYear(),today.getMonth(),1)};
+  let map = null, markerLayer = null, positionMarker = null, toastTimeout = null, lastFocused = null, editingId = null;
+  $('demoToggle').checked = state.showDemos;
+  $('upcomingOnly').checked = true;
+  $('eventForm').elements.startDate.value = '';
+
+  function allEvents() { return [...OFFICIAL_EVENTS, ...(state.showDemos ? DEMOS : []), ...custom]; }
+  function relevantDate(e) { return e.endDate||e.startDate||e.deadline||''; }
+  function isLocated(e) { return e.mode === 'offline' && Number.isFinite(e.lat) && Number.isFinite(e.lng); }
+  function kilometers(a,b,c,d) { const r = 6371, toRad = x => x * Math.PI / 180, v = Math.sin(toRad(c-a)/2)**2 + Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(toRad(d-b)/2)**2; return 2*r*Math.asin(Math.min(1,Math.sqrt(v))); }
+  function registrationStatus(e, now = new Date()) {
+    const day=seoulYmd(now),end=e.endDate||e.startDate;
+    if(end&&end<day) return {key:'ended',label:'대회 종료',inPeriod:false};
+    if((e.registrationClosesAt && now.getTime()>=Date.parse(e.registrationClosesAt)) || (e.deadline && e.deadline<day)) return {key:'closed',label:'접수 마감',inPeriod:false};
+    if((e.registrationOpensAt && now.getTime()<Date.parse(e.registrationOpensAt)) || (e.registrationStart && e.registrationStart>day)) return {key:'soon',label:'접수 예정',inPeriod:false};
+    if(e.deadline===day && !e.registrationClosesAt) return {key:'today',label:'마감일 · 시각 확인',inPeriod:false};
+    const began=e.registrationOpensAt?now.getTime()>=Date.parse(e.registrationOpensAt):Boolean(e.registrationStart&&e.registrationStart<=day);
+    if(began&&(e.deadline||e.registrationClosesAt)) return {key:'open',label:e.deadline===day?'오늘 마감 · 접수기간 중':'접수기간 중',inPeriod:true};
+    return {key:'unknown',label:'접수 일정 확인',inPeriod:false};
+  }
+  function dateRange(begin,end){return formatDate(begin)+(end&&end!==begin?` ~ ${formatDate(end)}`:'');}
+  function eventDateLabel(e){
+    if(e.mode==='online'&&!e.startDate) return e.registrationStart?`작품 접수 ${dateRange(e.registrationStart,e.deadline)}`:`작품 접수 · ${formatDate(e.deadline)} 마감`;
+    const schedules=e.schedules||[];
+    if(schedules.length>1) return `${schedules[0].label} ${dateRange(schedules[0].startDate,schedules[0].endDate)} 외 ${schedules.length-1}개 일정`;
+    return dateRange(e.startDate,e.endDate);
+  }
+  function deadlineLabel(e){
+    if(!e.deadline) return '일정 미정';
+    if(e.registrationClosesAt){
+      const stamp=new Date(e.registrationClosesAt);
+      const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(stamp);
+      return `${formatDate(e.deadline)} ${seoulYmd(stamp)!==e.deadline&&time==='00:00'?'24:00':time} (한국시간)`;
+    }
+    return `${formatDate(e.deadline)} · 시각 확인`;
+  }
+  function filterEvents() {
+    const term=state.search.toLocaleLowerCase('ko');
+    const distance=e=>state.position&&isLocated(e)?kilometers(state.position.lat,state.position.lng,e.lat,e.lng):Infinity;
+    const deadlineOrder=e=>{
+      const status=registrationStatus(e);
+      return status.key==='closed'||status.key==='ended'||!e.deadline?'9999-12-31':e.deadline;
+    };
+    return allEvents().filter(e=>{
+      if(state.category!=='all'&&e.category!==state.category) return false;
+      if(term&&!`${e.title} ${e.sport} ${e.region} ${e.venue} ${e.source} ${e.eligibility||''}`.toLocaleLowerCase('ko').includes(term)) return false;
+      if(state.region!=='all'&&!(state.region==='그 외'?!['경기','서울','인천','온라인'].includes(e.region):e.region===state.region)) return false;
+      if(state.upcoming&&relevantDate(e)<TODAY) return false;
+      if(state.openOnly&&!registrationStatus(e).inPeriod) return false;
+      if(state.favoritesOnly&&!favorites.has(e.id)) return false;
+      if(state.dayFilter&&!occurrencesForDate(e,state.dayFilter).length) return false;
+      if(state.nearOnly&&state.position&&distance(e)>state.radius) return false;
+      return true;
+    }).sort((a,b)=>{
+      if(state.sort==='title') return a.title.localeCompare(b.title,'ko');
+      if(state.sort==='deadline') {
+        const first=deadlineOrder(a).localeCompare(deadlineOrder(b));
+        if(first) return first;
+        const timeA=a.registrationClosesAt?Date.parse(a.registrationClosesAt):Infinity;
+        const timeB=b.registrationClosesAt?Date.parse(b.registrationClosesAt):Infinity;
+        if(timeA!==timeB) return timeA-timeB;
+      }
+      if(state.sort==='distance'&&distance(a)!==distance(b)) return distance(a)-distance(b);
+      return relevantDate(a).localeCompare(relevantDate(b))||a.title.localeCompare(b.title,'ko');
+    });
+  }
+
+  function toast(message) { const el=$('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimeout); toastTimeout=setTimeout(()=>el.classList.remove('show'),3400); }
+  function renderStats(){const arr=allEvents();$('statTotal').textContent=arr.length;$('statUpcoming').textContent=arr.filter(e=>relevantDate(e)>=TODAY).length;$('statLocated').textContent=arr.filter(isLocated).length;$('statMy').textContent=custom.length;}
+  function cardMarkup(e) {
+    const status=registrationStatus(e);
+    const distance=state.position&&isLocated(e)?` · 약 ${kilometers(state.position.lat,state.position.lng,e.lat,e.lng).toFixed(1)}km`:'';
+    const origin=e.demo?'<span class="badge badge-demo">가상 예시</span>':e.official?'<span class="badge badge-source">공식 공고 확인</span>':'<span class="badge badge-custom">내가 등록</span>';
+    return `<article class="event-card"><div class="event-head"><div class="badge-row"><span class="badge badge-${CATEGORY_CLASS[e.category]}">${escapeHtml(e.category)}</span>${origin}</div><button class="favorite-btn ${favorites.has(e.id)?'saved':''}" type="button" data-fav="${escapeHtml(e.id)}" aria-pressed="${favorites.has(e.id)}" aria-label="${escapeHtml(e.title)} 관심 ${favorites.has(e.id)?'해제':'추가'}">${favorites.has(e.id)?'★':'☆'}</button></div><h4 class="event-name">${escapeHtml(e.title)}</h4><p class="event-sport">${escapeHtml(e.sport)} · ${e.mode==='online'?'온라인':'오프라인'}</p><span class="badge status-${status.key}">${status.label}</span><div class="event-divider"></div><div class="event-detail-line"><i aria-hidden="true">▦</i><span>${escapeHtml(eventDateLabel(e))}</span></div><div class="event-detail-line"><i aria-hidden="true">⌖</i><span>${escapeHtml(e.venue)}${escapeHtml(distance)}</span></div>${e.eligibility?`<p class="event-eligibility">대상 · ${escapeHtml(e.eligibilityShort||e.eligibility)}</p>`:''}${e.registrationNote?`<p class="event-warning">${escapeHtml(e.registrationNote)}</p>`:''}${e.official?`<div class="source-meta">${escapeHtml(e.source)}<br>확인 ${formatDate(e.checkedAt)}</div>`:''}<div class="event-bottom"><span class="deadline-pill ${e.deadline?'':'no-deadline'}">마감 ${escapeHtml(deadlineLabel(e))}</span><button type="button" class="card-detail-btn" data-detail="${escapeHtml(e.id)}">상세 보기</button></div></article>`;
+  }
+  function renderList(events){$('cardGrid').innerHTML=events.map(cardMarkup).join('');}
+  function render(){
+    const events=filterEvents();renderStats();$('resultCount').textContent=events.length;
+    const labels={list:'대회 목록',map:'대회 지도',calendar:'대회 캘린더'};
+    $('viewTitle').firstChild.textContent=labels[state.view]+' ';
+    $('resultsSubtext').textContent=state.dayFilter?`${formatDate(state.dayFilter)} 일정만 표시 중 · 초기화로 전체 보기`:`현재 조건 ${events.length}개 · 공식 공고 ${OFFICIAL_EVENTS.length}건 수록`;
+    for(const view of ['list','map','calendar']) $(view+'View').classList.toggle('hidden',state.view!==view);
+    $('emptyState').classList.toggle('hidden',events.length!==0);
+    if(state.view==='list') renderList(events);
+    if(state.view==='map') renderMap(events);
+    if(state.view==='calendar') renderCalendar(events);
+  }
+
+  function showView(view){state.view=view;for(const b of document.querySelectorAll('.mode-tab')){ const selected=b.dataset.view===view;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected)); }render();$('discover').scrollIntoView({behavior:'smooth',block:'start'});}
+  function showModal(id){ const el=$(id);lastFocused=document.activeElement;el.classList.remove('hidden');el.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';el.querySelector('.modal-close').focus();}
+  function closeModal(id){const el=$(id);el.classList.add('hidden');el.setAttribute('aria-hidden','true');if ($('detailBackdrop').classList.contains('hidden') && $('formBackdrop').classList.contains('hidden')) document.body.style.overflow='';lastFocused?.focus();}
+  // 일반 준비물 안내입니다. 실제 상품 재고나 가격을 확인한 추천은 아닙니다.
+  // 검색 문자열이 특정 종목과 겹칠 때 더 구체적인 키를 우선하기 위해 명시적 패턴만 매칭합니다.
+  const RECOMMENDED_ITEMS = {
+    '클라이밍':[['👟','암벽화','대여 가능 여부와 본인에게 맞는 착용감 확인'],['🎒','장비 가방','주최 측에서 요구하는 장비와 서류 정리'],['🥤','물병','대회장 반입 기준 확인']],
+    '펜싱':[['🤺','펜싱 장비','종목·연령별 공식 장비검사 규정 확인'],['👟','펜싱화','착용하던 신발의 상태 확인'],['📁','참가 서류','팀 구성과 교육 이수 서류 확인']],
+    '뮤지컬':[['🎵','반주 음원','지정 형식·제출 방법·버전 확인'],['📒','악보·가사','허용 곡과 사용 규정 확인'],['👕','무대 복장','움직임과 대회 요강에 맞춰 준비']],
+    '배드민턴':[['🏸','라켓','본인에게 맞는 무게와 그립 크기 확인'],['👟','배드민턴화','실내 코트 규정과 접지력 확인'],['🧦','운동 양말','장시간 경기 시 착용감 고려'],['🎒','라켓 가방','장비 휴대 및 보관']],
+    '탁구':[['🏓','탁구 라켓','그립 방식과 러버 규정 확인'],['👟','실내 운동화','대회장 바닥 조건 확인'],['🧴','러버 관리용품','라켓 상태 관리'],['🎒','운동 가방','장비 정리']],
+    '농구':[['🏀','농구공','대회 규격과 별도 준비 여부 확인'],['👟','농구화','실내·실외 코트 조건 확인'],['🥤','물병','충분한 수분 섭취'],['🧦','운동 양말','착용감 확인']],
+    '축구':[['⚽','축구공','참가자가 직접 준비해야 하는지 확인'],['👟','축구화','구장 바닥에 맞는 종류 확인'],['🦵','정강이 보호대','대회 규정상 착용 여부 확인'],['🥤','물병','경기 중 수분 보충']],
+    '마라톤':[['👟','러닝화','편안하게 신던 신발을 우선'],['🧦','러닝 양말','발에 잘 맞는 제품 선택'],['🧢','모자','날씨에 따라 선택'],['🥤','물병','주최 측 급수 계획 확인']],
+    '러닝':[['👟','러닝화','편안하게 신던 신발을 우선'],['🧦','러닝 양말','발에 잘 맞는 제품 선택'],['🧢','모자','날씨에 따라 선택'],['🥤','물병','주최 측 급수 계획 확인']],
+    '회화':[['🎨','그림 도구','대회 규정에 허용된 매체 확인'],['🖌️','붓과 팔레트','선택한 표현 기법에 맞게 준비'],['📄','그림 용지','규격과 제공 여부 확인'],['📁','작품 보관 가방','작품 손상 방지']],
+    '수채화':[['🎨','수채화 물감','사용할 색상과 규정 확인'],['🖌️','수채화 붓','표현 방식에 맞는 크기 선택'],['📄','수채화지','대회 규격과 종이 제공 여부 확인'],['🫙','물통','현장 준비 허용 여부 확인']],
+    '디지털아트':[['💻','드로잉 태블릿','사용 환경과 호환성 확인'],['✏️','디지털 펜','태블릿 모델과 호환 확인'],['💾','파일 백업 수단','대회 제출 형식 확인'],['🧤','드로잉 장갑','필요한 경우 선택']],
+    '일러스트':[['💻','드로잉 태블릿','사용 환경과 호환성 확인'],['✏️','디지털 펜','기기와 호환성 확인'],['💾','저장 장치','제출 방식에 맞춰 준비'],['📒','스케치 노트','구상 단계에 활용']],
+    '피아노':[['📒','악보 파일','주최 측 악보 지침 확인'],['👜','악보 가방','악보와 자료 보관'],['🎧','연습용 헤드폰','전자 피아노 연습 시 선택'],['🧼','건반용 관리 천','개인 장비 관리용']],
+    '합창':[['📒','악보 파일','대회 지정 악보와 매수 확인'],['📁','악보 폴더','파트별 악보 정리'],['👔','무대 의상','단체 복장 규정 확인'],['🥤','물병','무대 대기 시 활용']],
+    '스트릿댄스':[['👟','댄스화','움직임과 무대 바닥에 맞게 선택'],['👕','연습복','움직이기 편한 복장'],['🥤','물병','연습 및 대회 당일 활용'],['🎒','운동 가방','여벌 복장 보관']]
+  };
+  const CATEGORY_RECOMMENDATIONS = {
+    '체육':[['👟','종목에 맞는 신발','경기장 및 주최 측 규정 확인'],['🥤','물병','대회장 반입 규정 확인'],['🎒','운동 가방','개인 장비 보관']],
+    '미술':[['🎨','사용할 표현 재료','대회 요강의 재료 제한 확인'],['📄','작품용 종이','규격 및 제출 형식 확인'],['📁','작품 보관 도구','작품 손상 방지']],
+    '음악':[['📒','악보 및 파일','지정곡과 제출 형식 확인'],['📁','자료 보관 폴더','악보 및 참가 관련 서류 정리']],
+    '무용':[['👟','무대·연습 신발','춤 장르 및 무대 규정 확인'],['👕','연습복','움직임과 안전 고려'],['🥤','물병','대회장 규정 확인']]
+  };
+  function recommendationsFor(e){
+    const sport = String(e.sport || '').trim().toLocaleLowerCase('ko');
+    // 수채화는 회화보다 구체적이므로 먼저 검사
+    const keys = ['클라이밍','펜싱','뮤지컬','수채화','배드민턴','디지털아트','일러스트','스트릿댄스','마라톤','러닝','탁구','농구','축구','피아노','합창','회화'];
+    const matched = keys.find(key=>sport.includes(key.toLocaleLowerCase('ko')));
+    return {items: matched?RECOMMENDED_ITEMS[matched]:(CATEGORY_RECOMMENDATIONS[e.category]||[]),matched:matched||null};
+  }
+  function recommendationMarkup(e){
+    const {items,matched}=recommendationsFor(e);
+    return `<section class="reco-section" aria-label="종목별 준비물 상품 추천"><div class="reco-top"><div class="reco-title">🛍️ 종목별 준비물 · 상품 추천</div><span class="reco-tag">${matched?'종목 맞춤':'분야 공통'} · 준비물 예시</span></div><p class="reco-intro">${escapeHtml(e.sport)} 대회를 준비할 때 참고할 만한 품목이에요. 구매가 필수라는 뜻은 아니에요.</p><div class="reco-grid">${items.map(([icon,name,why])=>`<div class="reco-product"><span class="reco-emoji" aria-hidden="true">${icon}</span><div><div class="reco-name">${escapeHtml(name)}</div><div class="reco-why">${escapeHtml(why)}</div></div></div>`).join('')}</div><p class="reco-small">※ 이 목록은 일반적인 준비물 예시이며 실제 상품·가격·판매처를 비교하는 기능은 아직 연결되지 않았습니다. 대회별 준비물, 허용 장비, 참가 규정은 공식 요강을 먼저 확인하세요.</p></section>`;
+  }
+  function showDetail(id){
+    const e=allEvents().find(x=>x.id===id);if(!e)return;
+    const status=registrationStatus(e),editable=custom.some(x=>x.id===id);
+    const submissionOnly=e.mode==='online'&&!e.startDate;
+    const schedule=submissionOnly?(e.registrationStart?dateRange(e.registrationStart,e.deadline):`${formatDate(e.deadline)} 마감`):(e.schedules||[]).length?e.schedules.map(x=>`${x.label}: ${dateRange(x.startDate,x.endDate)}`).join('\n'):dateRange(e.startDate,e.endDate);
+    const rows=[['세부 종목',e.sport],[submissionOnly?'작품 접수 기간':'대회 일정',schedule],['접수 상태',status.label+' (공고 일정 기준)'],['접수 시작',formatDate(e.registrationStart)],['접수 마감',deadlineLabel(e)],['참가 대상',e.eligibility||'공식 요강 확인'],['진행 방식',e.mode==='online'?'온라인':'오프라인'],['개최 지역',e.region],['장소',e.venue],['참가비',e.fee||'공식 요강 확인'],['주최·출처',e.source]];
+    if(e.official)rows.push(['출처 확인일',formatDate(e.checkedAt)]);
+    const url=safeUrl(e.url);
+    const sourceLinks=(e.official?e.sourceLinks||[]:[]).filter(x=>safeUrl(x.url)).map(x=>`<a href="${escapeHtml(safeUrl(x.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(x.label)}</a>`).join('');
+    $('detailContent').innerHTML=`<div class="detail-header"><span class="badge badge-${CATEGORY_CLASS[e.category]}">${escapeHtml(e.category)}</span><span class="badge status-${status.key}">${status.label}</span>${e.demo?'<span class="badge badge-demo">가상 예시 · 신청 불가</span>':e.official?'<span class="badge badge-source">공식 공고 확인</span>':'<span class="badge badge-custom">내가 등록</span>'}</div><h2 class="detail-heading" id="detailTitle">${escapeHtml(e.title)}</h2><p class="detail-subheading">${e.demo?'실제로 존재하지 않는 기능 체험용 대회입니다.':'접수 상태는 일정으로 계산합니다. 참가 자격·정원·변경 사항은 공식 공고를 확인하세요.'}</p><div class="detail-rows">${rows.map(([label,value])=>`<div class="detail-row"><label>${escapeHtml(label)}</label><span>${escapeHtml(value)}</span></div>`).join('')}</div>${e.registrationNote?`<p class="detail-note">${escapeHtml(e.registrationNote)}</p>`:''}<p class="detail-description">${escapeHtml(e.description||'추가 안내가 등록되지 않았습니다.')}</p>${sourceLinks?`<div class="source-links">${sourceLinks}</div>`:''}${recommendationMarkup(e)}<div class="detail-action-row"><div>${editable?`<button type="button" class="button button-subtle" data-edit="${escapeHtml(e.id)}">대회 수정</button><button type="button" class="button button-danger" data-delete="${escapeHtml(e.id)}">대회 삭제</button>`:''}</div><div>${url&&!e.demo?`<a class="button button-primary" href="${escapeHtml(url)}" rel="noopener noreferrer" target="_blank">공식 안내 열기</a>`:`<button type="button" class="button button-subtle" data-detail-close="1">닫기</button>`}</div></div>`;
+    showModal('detailBackdrop');
+  }
+  function openForm(id=null){
+    const e=typeof id==='string'?custom.find(x=>x.id===id):null;
+    editingId=e?.id||null;
+    if(!$('detailBackdrop').classList.contains('hidden'))closeModal('detailBackdrop');
+    const form=$('eventForm');form.reset();$('formError').textContent='';
+    $('formTitle').textContent=e?'등록한 대회 수정':'새 대회 등록';
+    $('formSubmit').textContent=e?'수정 저장하기':'대회 저장하기';
+    $('eventRegion').disabled=false;$('eventVenue').disabled=false;
+    form.elements.startDate.value='';
+    if(e){
+      for(const field of form.elements)if(field.name&&Object.hasOwn(e,field.name))field.value=e[field.name]??'';
+      if(e.registrationClosesAt&&seoulYmd(new Date(e.registrationClosesAt))!==e.deadline){form.elements.deadlineMidnight.checked=true;}
+      if(e.registrationClosesAt&&seoulYmd(new Date(e.registrationClosesAt))===e.deadline){
+        form.elements.deadlineTime.value=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(e.registrationClosesAt));
+      }
+    }
+    form.elements.deadlineTime.disabled=form.elements.deadlineMidnight.checked;
+    updateModeFields();showModal('formBackdrop');
+  }
+  function updateModeFields(){
+    const online=$('eventMode').value==='online';$('eventRegion').disabled=online;$('eventVenue').disabled=online;
+    $('eventForm').elements.startDate.required=!online;
+    $('eventDateLabelText').textContent=online?'개최일 (별도 개최 일정이 있을 때)':'개최일 (필수)';
+    $('eventDateHelp').textContent=online?'실제 개최일이 없는 온라인 공모전은 개최일·종료일을 비우고 접수 마감일을 입력하세요.':'오프라인 대회는 공식 개최일을 입력하세요. 접수 마감일과 구분해 주세요.';
+    if(online){$('eventRegion').value='온라인';$('eventVenue').value='온라인 접수';}
+    else{if($('eventRegion').value==='온라인')$('eventRegion').value='경기';if($('eventVenue').value==='온라인 접수')$('eventVenue').value='';}
+  }
+  function saveEvent(event){
+    event.preventDefault();
+    const values=Object.fromEntries(new FormData($('eventForm')).entries());
+    const index=editingId?custom.findIndex(e=>e.id===editingId):-1,previous=index>=0?custom[index]:null;
+    const obj={...previous,...values,registrationClosesAt:'',deadlineMidnight:$('eventForm').elements.deadlineMidnight.checked};
+    if(previous){
+      if(values.registrationStart!==previous.registrationStart)obj.registrationOpensAt='';
+      if(values.deadline!==previous.deadline)obj.registrationClosesAt='';
+      if(values.startDate!==previous.startDate||(values.endDate||values.startDate)!==previous.endDate)obj.schedules=[];
+    }
+    try{
+      const e=normalizedEvent(obj,editingId||newId());
+      if(index>=0)custom[index]=e;else custom.push(e);
+      if(!persist(STORAGE_EVENTS,custom)){if(index>=0)custom[index]=previous;else custom.pop();return;}
+      closeModal('formBackdrop');state.dayFilter='';render();
+      toast(index>=0?'대회 정보를 수정했어요. (이 브라우저에 저장됨)':'대회를 등록했어요. (이 브라우저에 저장됨)');
+    }catch(error){$('formError').textContent=error.message||'입력값을 확인하세요.';}
+  }
+  function deleteEvent(id){
+    const i=custom.findIndex(e=>e.id===id);if(i<0)return;
+    if(!confirm('내가 등록한 이 대회를 삭제할까요? 백업이 필요하면 먼저 JSON으로 내보내세요.'))return;
+    const removed=custom.splice(i,1)[0];
+    if(!persist(STORAGE_EVENTS,custom)){custom.splice(i,0,removed);return;}
+    favorites.delete(id);persist(STORAGE_FAVS,[...favorites]);closeModal('detailBackdrop');render();toast('대회가 삭제됐어요.');
+  }
+
+  function renderMap(events) {
+    const note=$('mapFootnote');const mapped=events.filter(isLocated);
+    note.textContent=mapped.length?`좌표가 등록된 오프라인 대회 ${mapped.length}개 / 검색 결과 ${events.length}개 · 가상 예시는 가상 위치입니다.`:'현재 결과에는 좌표가 확인된 대회가 없어요. 상세 정보의 장소와 공식 공고를 확인하세요. 가상 예시를 켜면 지도 기능을 체험할 수 있어요.';
+    if (typeof window.L === 'undefined'){$('mapError').classList.remove('hidden');return;}
+    $('mapError').classList.add('hidden');
+    if(!map){map=L.map('map',{zoomControl:true}).setView([37.2636,127.0286],10);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);markerLayer=L.layerGroup().addTo(map);}
+    markerLayer.clearLayers();const bounds=[];
+    for(const e of mapped){const m=L.marker([e.lat,e.lng]).addTo(markerLayer);m.bindPopup(`<div class="map-popup-title">${escapeHtml(e.title)}</div><div class="map-popup-note">${escapeHtml(e.category)} · ${formatDate(e.startDate)}${e.demo?' · 가상 예시':''}</div><button class="map-popup-button" type="button" data-map-detail="${escapeHtml(e.id)}">상세 보기</button>`);bounds.push([e.lat,e.lng]);}
+    if(state.position){const latlng=[state.position.lat,state.position.lng];positionMarker&&map.removeLayer(positionMarker);positionMarker=L.circleMarker(latlng,{radius:8,color:'#fff',weight:3,fillColor:'#5a58d7',fillOpacity:1}).addTo(map).bindPopup('현재 위치 · 주변 지도를 불러올 때 외부 지도 서버에 접속합니다'); if(state.nearOnly) bounds.push(latlng);}
+    else if(positionMarker){map.removeLayer(positionMarker);positionMarker=null;}
+    setTimeout(()=>{map.invalidateSize();if(bounds.length){map.fitBounds(bounds,{padding:[38,38],maxZoom:11});}else if(state.position){map.setView([state.position.lat,state.position.lng],11);}},80);
+  }
+  function occurrencesForDate(e,date){
+    const list=[];
+    const periods=(e.schedules||[]).length?e.schedules:e.startDate?[{label:'대회',startDate:e.startDate,endDate:e.endDate||e.startDate}]:[];
+    for(const period of periods)if(period.startDate<=date&&(period.endDate||period.startDate)>=date)list.push({event:e,type:'event',label:period.label});
+    if(e.deadline===date)list.push({event:e,type:'deadline',label:'마감'});
+    return list;
+  }
+  function renderCalendar(events){
+    const c=state.calendarDate,y=c.getFullYear(),m=c.getMonth();$('monthLabel').textContent=`${y}년 ${m+1}월`;
+    const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),cells=[];
+    for(let i=0;i<42;i++){
+      const d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),date=toYmd(d);
+      const items=events.flatMap(e=>occurrencesForDate(e,date)),outside=d.getMonth()!==m,isToday=date===TODAY;
+      const chips=items.slice(0,2).map(o=>`<button type="button" class="calendar-item ${o.type==='deadline'?'deadline':''}" data-detail="${escapeHtml(o.event.id)}" title="${escapeHtml(o.label+' · '+o.event.title)}">${escapeHtml(o.label)} · ${escapeHtml(o.event.title)}</button>`).join('');
+      const more=items.length>2?`<button type="button" class="calendar-more" data-day="${date}">+${items.length-2}개 더보기</button>`:'';
+      cells.push(`<div class="calendar-day ${outside?'outside':''} ${isToday?'today':''}"><span class="day-number">${d.getDate()}</span>${chips}${more}</div>`);
+    }
+    $('calendarGrid').innerHTML=cells.join('');
+  }
+  function exportJson(){
+    if(!custom.length){toast('내보낼 개인 등록 대회가 없어요. 공식 공고 목록은 사이트에 포함돼 있어요.');return;}
+    const json=JSON.stringify({version:'0.3.1',exportedAt:new Date().toISOString(),events:custom},null,2);
+    const blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=`moa-events-${TODAY}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('내가 등록한 대회 정보를 내보냈어요.');
+  }
+  async function importJson(input){
+    const file=input.files?.[0];if(!file)return;
+    try{
+      if(file.size>3*1024*1024)throw Error('3MB 이하의 JSON만 지원합니다.');
+      const raw=JSON.parse(await file.text()),items=Array.isArray(raw)?raw:raw?.events;
+      if(!Array.isArray(items))throw Error('JSON 배열 또는 {"events": [...]} 형식이어야 합니다.');
+      if(items.length>1000)throw Error('한 번에 최대 1,000개까지만 등록할 수 있습니다.');
+      const incoming=items.map(e=>normalizedEvent(e,String(e?.id||newId()))),existing=new Set(custom.map(e=>e.id));
+      let added=0;
+      for(const e of incoming){if(existing.has(e.id))continue;custom.push(e);existing.add(e.id);added++;}
+      if(added&&!persist(STORAGE_EVENTS,custom)){custom.splice(custom.length-added,added);return;}
+      render();toast(`개인 대회 ${added}개를 가져왔어요. ${incoming.length-added}개는 중복 ID로 제외됐어요.`);
+    }catch(error){toast(`가져오기 실패: ${error.message}`);}finally{input.value='';}
+  }
+  function resetFilters(){
+    Object.assign(state,{category:'all',search:'',region:'all',upcoming:true,openOnly:false,sort:'date',favoritesOnly:false,dayFilter:'',nearOnly:false});
+    $('searchInput').value='';$('regionInput').value='all';$('sortSelect').value='date';$('upcomingOnly').checked=true;$('openOnly').checked=false;$('favoritesOnly').checked=false;$('nearOnly').checked=false;
+    for(const b of document.querySelectorAll('.category-button'))b.classList.toggle('selected',b.dataset.category==='all');render();
+  }
+
+  function locateUser(){if(!navigator.geolocation){toast('이 브라우저는 위치 기능을 지원하지 않아요.');return;}if(!window.isSecureContext){$('locationNote').textContent='현재 위치 검색은 HTTPS 사이트에서 사용할 수 있어요. 지역 필터를 이용해 주세요.';return;}$('locateBtn').disabled=true;$('locationNote').textContent='위치 권한을 확인하고 있어요…';navigator.geolocation.getCurrentPosition((pos)=>{state.position={lat:pos.coords.latitude,lng:pos.coords.longitude};$('nearOnly').disabled=false;$('distanceOption').disabled=false;$('distanceOption').textContent='가까운순';$('nearOnly').checked=true;state.nearOnly=true;$('locationNote').textContent=`현재 위치를 확인했어요. 반경 ${state.radius}km 이내 대회만 표시합니다.`;$('locateBtn').disabled=false;render();toast('현재 위치를 기준으로 대회를 찾고 있어요.');},(err)=>{$('locateBtn').disabled=false;$('locationNote').textContent=err.code===1?'위치 권한이 거부됐어요. 브라우저 설정에서 권한을 확인하세요.':'위치를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.';toast('현재 위치를 확인하지 못했어요.');},{timeout:10000,enableHighAccuracy:false,maximumAge:60000});}
+
+  // 사용자 상호작용
+  $('addOpenBtn').addEventListener('click',openForm);$('emptyAddBtn').addEventListener('click',openForm);
+  $('heroExploreBtn').addEventListener('click',()=>showView('list'));$('heroMapBtn').addEventListener('click',()=>showView('map'));
+  for(const b of document.querySelectorAll('.mode-tab')) b.addEventListener('click',()=>showView(b.dataset.view));
+  for(const b of document.querySelectorAll('.category-button'))b.addEventListener('click',()=>{state.category=b.dataset.category;state.dayFilter='';for(const other of document.querySelectorAll('.category-button'))other.classList.toggle('selected',other===b);render();});
+  $('searchInput').addEventListener('input',e=>{state.search=e.target.value.trim();state.dayFilter='';render();});
+  $('regionInput').addEventListener('change',e=>{state.region=e.target.value;state.dayFilter='';render();});
+  $('upcomingOnly').addEventListener('change',e=>{state.upcoming=e.target.checked;render();});
+  $('openOnly').addEventListener('change',e=>{state.openOnly=e.target.checked;render();});
+  $('sortSelect').addEventListener('change',e=>{state.sort=e.target.value;render();});
+  $('emptyResetBtn').addEventListener('click',resetFilters);
+  $('favoritesOnly').addEventListener('change',e=>{state.favoritesOnly=e.target.checked;render();});
+  $('demoToggle').addEventListener('change',e=>{const previous=state.showDemos;state.showDemos=e.target.checked;if(!persist(STORAGE_SHOW_DEMOS,state.showDemos)){state.showDemos=previous;e.target.checked=previous;}render();});
+  $('resetFiltersBtn').addEventListener('click',resetFilters);
+  $('locateBtn').addEventListener('click',locateUser);$('radiusSelect').addEventListener('change',e=>{state.radius=Number(e.target.value);if(state.position)$('locationNote').textContent=`반경 ${state.radius}km로 설정했어요.`;render();});
+  $('nearOnly').addEventListener('change',e=>{state.nearOnly=e.target.checked;render();});
+  $('monthPrev').addEventListener('click',()=>{state.calendarDate=new Date(state.calendarDate.getFullYear(),state.calendarDate.getMonth()-1,1);render();});
+  $('monthNext').addEventListener('click',()=>{state.calendarDate=new Date(state.calendarDate.getFullYear(),state.calendarDate.getMonth()+1,1);render();});
+  $('monthToday').addEventListener('click',()=>{state.calendarDate=new Date(today.getFullYear(),today.getMonth(),1);render();});
+  $('eventForm').elements.deadlineMidnight.addEventListener('change',event=>{$('eventForm').elements.deadlineTime.disabled=event.target.checked;});
+  $('eventMode').addEventListener('change',updateModeFields);$('eventForm').addEventListener('submit',saveEvent);
+  $('formClose').addEventListener('click',()=>closeModal('formBackdrop'));$('formCancel').addEventListener('click',()=>closeModal('formBackdrop'));$('detailClose').addEventListener('click',()=>closeModal('detailBackdrop'));
+  for(const id of ['formBackdrop','detailBackdrop'])$(id).addEventListener('click',e=>{if(e.target===$(id))closeModal(id);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('formBackdrop').classList.contains('hidden'))closeModal('formBackdrop');else if(!$('detailBackdrop').classList.contains('hidden'))closeModal('detailBackdrop');}});
+  $('exportBtn').addEventListener('click',exportJson);$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',e=>importJson(e.target));
+  document.addEventListener('click',e=>{
+    const fav=e.target.closest('[data-fav]');if(fav){const id=fav.dataset.fav,wasSaved=favorites.has(id);wasSaved?favorites.delete(id):favorites.add(id);if(!persist(STORAGE_FAVS,[...favorites])){wasSaved?favorites.add(id):favorites.delete(id);}render();return;}
+    const detail=e.target.closest('[data-detail], [data-map-detail]');if(detail){showDetail(detail.dataset.detail||detail.dataset.mapDetail);return;}
+    const more=e.target.closest('[data-day]');if(more){state.dayFilter=more.dataset.day;showView('list');return;}
+    const edit=e.target.closest('[data-edit]');if(edit){openForm(edit.dataset.edit);return;}
+    const del=e.target.closest('[data-delete]');if(del){deleteEvent(del.dataset.delete);return;}
+    if(e.target.closest('[data-detail-close]'))closeModal('detailBackdrop');
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Tab')return;
+    const active=['formBackdrop','detailBackdrop'].map($).find(el=>!el.classList.contains('hidden'));
+    if(!active)return;
+    const nodes=[...active.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled])')].filter(el=>el.getClientRects().length);
+    if(!nodes.length)return;
+    const first=nodes[0],last=nodes[nodes.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  });
+  function refreshClock(){TODAY=seoulYmd();today=new Date(TODAY+'T12:00:00');render();}
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClock();});
+  setInterval(()=>{if(!document.hidden)refreshClock();},60000);
+  render();
+})();
+
+</script>
+</body>
+</html>
+
