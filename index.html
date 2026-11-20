@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f8fafc" />
-  <title>모아대회 | 예체능 대회 찾기 · V0.3.1</title>
+  <title>모아대회 | 예체능 대회 찾기 · V0.3.2</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
 :root{--ink:#18233d;--muted:#74819a;--line:#e6ebf3;--blue:#6153de;--blue-dark:#5144c4;--soft:#f6f8fd;--white:#fff;--shadow:0 8px 28px rgba(30,48,92,.055)}
@@ -29,7 +29,7 @@
 .reco-small{font-size:11px;color:#8e90a6;line-height:1.6;margin:14px 0 0}
 @media (max-width:560px){.reco-section{padding:13px}.reco-grid{grid-template-columns:1fr}}
 
-/* V0.3.1: readable controls and source/status indicators. */
+/* V0.3.2: readable controls and source/status indicators. */
 body{font-size:16px}.hero p,.section-heading p,.demo-banner,.field-label,.category-button,.filter-check,.filters>select,.search-box input,.button-quiet,.event-detail-line,.event-sport,.badge,.deadline-pill,.card-detail-btn,.detail-row,.detail-subheading,.modal-desc,.form-grid label,.form-help,.form-error,.reco-intro,.reco-name,.reco-why{font-size:14px}
 .sidebar-note,.results-toolbar p,.stat-label,.map-footnote,.reco-small,footer{font-size:13px}.event-name{font-size:18px}.event-card{gap:12px}.card-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}.results-toolbar{flex-wrap:wrap}.data-tools{flex-wrap:wrap}.sort-row{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin:0 0 18px;font-size:14px}.sort-row select{border:1px solid var(--line);border-radius:9px;background:white;padding:10px 30px 10px 12px;color:var(--ink);max-width:100%}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%2366728a' stroke-width='1.5'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 8px center!important;padding-right:30px!important}.badge-source{background:#e8f6f0;color:#237656}.badge-custom{background:#eef1f6;color:#546378}.status-open{background:#e7f7ee;color:#177146}.status-closed,.status-ended{background:#eff1f5;color:#647086}.status-soon{background:#edf0ff;color:#5149b0}.status-today{background:#fff0db;color:#9d5b0b}.source-meta{font-size:13px;color:#66728a;line-height:1.65}.event-bottom{align-items:flex-start;flex-wrap:wrap}.event-eligibility{font-size:14px;color:#4d5870;margin:0;line-height:1.6}.event-warning{font-size:13px;color:#92602a;line-height:1.6;margin:0}.detail-row span{white-space:pre-line}.detail-note{padding:12px;background:#fff7e8;border:1px solid #f5dfb8;border-radius:10px;font-size:14px;line-height:1.7;color:#79552c}.source-links{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.source-links a{font-size:14px;color:var(--blue)}.detail-action-row>div{display:flex;gap:8px;flex-wrap:wrap}.form-grid input,.form-grid select,.form-grid textarea{font-size:16px}.form-grid{gap:17px}.modal{width:min(100%,650px)}.detail-modal{width:min(100%,620px)}.detail-description{font-size:16px}.reco-small{line-height:1.7}.reco-tag{font-size:13px}.reco-product{align-items:flex-start}.calendar-item,.calendar-weekdays span,.day-number,.calendar-more{font-size:14px}.calendar-day{min-height:120px}.calendar-legend{font-size:13px;flex-wrap:wrap}.calendar-today{font-size:14px!important}.calendar-toolbar h3{font-size:20px}.calendar-scroll{overflow-x:auto}.calendar-weekdays,.calendar-grid{min-width:600px}.form-actions,.hero-actions{flex-wrap:wrap}.empty-state .button{margin:5px}.topbar{min-height:82px;height:auto;padding-top:18px;padding-bottom:18px}.brand-beta{font-size:11px}.stat-icon{flex-shrink:0}.button{min-height:42px}.favorite-btn{min-width:36px;min-height:36px}.form-help{margin:0}.reco-why{line-height:1.6}
@@ -45,7 +45,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     <header class="topbar">
       <div class="brand" aria-label="모아대회 홈">
         <span class="brand-mark" aria-hidden="true">✳</span>
-        <div><span class="brand-name">모아대회</span><span class="brand-beta">BETA 0.3.1 · 실제 공고 7건</span></div>
+        <div><span class="brand-name">모아대회</span><span class="brand-beta">BETA 0.3.2 · 실제 공고 7건</span></div>
       </div>
       <div class="header-right">
         <span class="header-subtitle">예체능 대회, 한눈에 찾기</span>
@@ -132,14 +132,14 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
             <div class="results-toolbar"><div><h3 id="viewTitle">대회 목록 <span id="resultCount">0</span></h3><p id="resultsSubtext">관심 있는 대회를 찾아보세요.</p></div><div class="data-tools"><button type="button" class="button button-quiet" id="importBtn" title="저장된 JSON 파일로 대회 등록">가져오기</button><button type="button" class="button button-quiet" id="exportBtn" title="직접 등록한 대회를 JSON으로 저장">내보내기</button></div></div>
             <div class="sort-row"><label for="sortSelect">정렬</label><select id="sortSelect"><option value="date">일정순</option><option value="deadline">접수 마감순</option><option value="title">이름순</option><option value="distance" id="distanceOption" disabled>가까운순 (위치 확인 필요)</option></select></div>
             <div id="listView" class="view-panel" role="tabpanel" aria-labelledby="tab-list"><div class="card-grid" id="cardGrid"></div></div>
-            <div id="mapView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-map"><div class="map-wrap"><div id="map" aria-label="대회 개최 장소 지도"></div><div id="mapError" class="map-error hidden">지도 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하세요.</div></div><p id="mapFootnote" class="map-footnote">※ 정확한 좌표가 입력된 오프라인 대회만 표시됩니다.</p></div>
+            <div id="mapView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-map"><div class="map-wrap"><div id="map" aria-label="대회 개최 장소 지도"></div><div id="mapError" class="map-error hidden">지도 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하세요.</div></div><p id="mapFootnote" class="map-footnote">위치를 확인한 오프라인 대회가 지도에 표시됩니다.</p></div>
             <div id="calendarView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-calendar"><div class="calendar-toolbar"><button id="monthPrev" type="button" aria-label="이전 달">‹</button><h3 id="monthLabel">2026년 11월</h3><button id="monthNext" type="button" aria-label="다음 달">›</button><button type="button" class="calendar-today" id="monthToday">오늘</button></div><div class="calendar-legend"><span><i class="legend-event"></i> 개최일</span><span><i class="legend-deadline"></i> 신청 마감일</span></div><div class="calendar-scroll"><div class="calendar-weekdays"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="calendar-grid" id="calendarGrid"></div></div></div>
             <div id="emptyState" class="empty-state hidden"><div>🔎</div><strong>조건에 맞는 대회가 없어요.</strong><p>필터를 초기화하거나 종료된 대회 숨기기를 꺼보세요.<br>직접 대회를 등록하거나 가상 예시로 기능을 둘러볼 수도 있어요.</p><button type="button" class="button button-subtle" id="emptyResetBtn">필터 초기화</button> <button type="button" class="button button-primary" id="emptyAddBtn">＋ 대회 등록하기</button></div>
           </div>
         </div>
       </section>
 
-      <footer><span>✳ 모아대회 <b>V0.3.1</b></span><span>학교 프로젝트 · 실제 대회는 주최 기관의 공식 공지를 반드시 확인하세요.</span></footer>
+      <footer><span>✳ 모아대회 <b>V0.3.2</b></span><span>학교 프로젝트 · 실제 대회는 주최 기관의 공식 공지를 반드시 확인하세요.</span></footer>
     </main>
   </div>
 
@@ -164,8 +164,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationOpensAt": "2026-10-26T10:00:00+09:00",
     "registrationClosesAt": "2026-11-28T00:00:00+09:00",
     "mode": "offline",
-    "lat": null,
-    "lng": null,
+    "lat": 37.55102,
+    "lng": 127.1575,
     "source": "동아뮤지컬콩쿠르 공식 요강",
     "url": "https://dongamusical.com/about-concours/about-donga-musical-concours/",
     "checkedAt": "2026-11-20",
@@ -190,8 +190,13 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
       {
         "label": "공식 장소·교통 안내",
         "url": "https://www.gdfac.or.kr/home/display/region/content/JSVFRWpvUW1RQjZNU21QelgrOW1mSEZtY3ljVG1hU0JISWt0ZU1ZTGQxRmdtVT0="
+      },
+      {
+        "label": "개최 시설 지도 · OpenStreetMap 기반",
+        "url": "https://mapcarta.com/W468669304"
       }
-    ]
+    ],
+    "locationCheckedAt": "2026-11-20"
   },
   {
     "id": "official-climbing-2026-gg",
@@ -199,7 +204,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "category": "체육",
     "sport": "스포츠클라이밍",
     "region": "서울",
-    "venue": "서울숲클라이밍센터 구로점",
+    "venue": "서울숲클라이밍 구로점 · 서울 구로구 디지털로 300 지하1층",
     "startDate": "2026-11-28",
     "endDate": "2026-11-28",
     "registrationStart": "",
@@ -207,14 +212,18 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationOpensAt": "",
     "registrationClosesAt": "2026-11-19T11:00:00+09:00",
     "mode": "offline",
-    "lat": null,
-    "lng": null,
+    "lat": 37.4845986,
+    "lng": 126.896279,
     "source": "경기도산악연맹 · 대한산악연맹",
     "url": "https://gg.kaf.or.kr/board/forum_01/read/2660",
     "sourceLinks": [
       {
         "label": "대회 일정·참가 부문",
         "url": "https://kaf.or.kr/notice/?bmode=view&idx=175752232"
+      },
+      {
+        "label": "개최 시설 · 네이버 지도",
+        "url": "https://m.place.naver.com/place/1156712614/home"
       }
     ],
     "checkedAt": "2026-11-20",
@@ -223,7 +232,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationNote": "이 카드의 마감은 경기도 참가자의 서류 제출 마감입니다. 서울 등 다른 지역은 해당 시·도연맹 공고를 확인하세요. 중앙연맹의 취합 마감과 다릅니다.",
     "fee": "무료 (경기도산악연맹 공고)",
     "description": "11월 28일 서울에서 개최되며 이 카드는 경기도 참가자의 접수 공고입니다. 경기도 서류 접수는 11월 19일 오전 11시에 마감됐습니다. 다른 지역 접수는 해당 시·도연맹 안내를 확인하세요.",
-    "schedules": []
+    "schedules": [],
+    "locationCheckedAt": "2026-11-20"
   },
   {
     "id": "official-fencing-2026",
@@ -239,8 +249,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationOpensAt": "2026-11-02T09:00:00+09:00",
     "registrationClosesAt": "2026-11-27T18:00:00+09:00",
     "mode": "offline",
-    "lat": null,
-    "lng": null,
+    "lat": 35.967809,
+    "lng": 127.007548,
     "source": "대한펜싱협회 공식 대회 공고",
     "url": "https://fencing.sports.or.kr/game/compListView?code=game&eventCd=COMPM00736&gubun=2&pageNum=1",
     "checkedAt": "2026-11-20",
@@ -254,8 +264,17 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
       {
         "label": "공식 장소·교통 안내",
         "url": "https://www.iksancmc.or.kr/index.iksan?menuCd=DOM_000000102005004000"
+      },
+      {
+        "label": "공식 체육관 시설 안내",
+        "url": "https://www.iksancmc.or.kr/index.iksan?menuCd=DOM_000000102005001000"
+      },
+      {
+        "label": "장소 위치 자료 · 공공체육시설 데이터 기반",
+        "url": "https://wooasports.wooahouse.com/facility/익산실내체육관/"
       }
-    ]
+    ],
+    "locationCheckedAt": "2026-11-20"
   },
   {
     "id": "official-yu-design-2026",
@@ -364,7 +383,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "category": "음악",
     "sport": "피아노·성악·관현악·실내악",
     "region": "서울",
-    "venue": "세일아트홀 · 서울특별시 강남구 역삼동 727-13",
+    "venue": "세일아트홀 · 서울 강남구 논현로 414 세일빌딩 지하1층 (역삼동 727-13)",
     "startDate": "2026-12-05",
     "endDate": "2026-12-05",
     "registrationStart": "2026-09-19",
@@ -372,8 +391,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationOpensAt": "",
     "registrationClosesAt": "2026-11-29T17:00:00+09:00",
     "mode": "offline",
-    "lat": null,
-    "lng": null,
+    "lat": 37.497239,
+    "lng": 127.039064,
     "source": "(사)도이치음악협회 공식 공고",
     "url": "https://www.deutschmv.com/%EB%8F%84%EC%9D%B4%EC%B9%98%EC%9D%8C%ED%98%91%EC%BD%A9%EC%BF%A0%EB%A5%B4%EB%A5%B4",
     "checkedAt": "2026-11-20",
@@ -382,13 +401,24 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     "registrationNote": "경연 세부 시각은 12월 2일 19:00 공지 예정입니다. 반주 동반과 신분증 등 참가 조건을 공식 요강에서 확인하세요.",
     "fee": "1곡 150,000원 / 2곡 200,000원 / 실내악 200,000원",
     "description": "12월 5일 세일아트홀에서 진행되는 음악 콩쿠르입니다. 피아노·성악·관현악·실내악과 피아노 반주 부문이 안내되어 있습니다. 결과와 심사평은 12월 6일 발표 예정입니다. 반주자 연결이 필요한 경우 추가 비용이 안내되어 있으니 신청 전 확인하세요.",
-    "schedules": []
+    "schedules": [],
+    "locationCheckedAt": "2026-11-20",
+    "sourceLinks": [
+      {
+        "label": "공식 공연장 안내",
+        "url": "https://seilmcf.org/05.art_hall/facility_infor.php"
+      },
+      {
+        "label": "장소 위치 자료 · 문화시설 공공데이터 기반",
+        "url": "https://qab.purpleo.kr/article/3934"
+      }
+    ]
   }
 ]
   </script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-/* 모아대회 V0.3.1 — 공식 출처를 확인한 내장 목록 + 개인 브라우저 저장.
+/* 모아대회 V0.3.2 — 공식 출처를 확인한 내장 목록 + 개인 브라우저 저장.
    자동 수집이나 잔여 정원 실시간 확인은 하지 않습니다. */
 (() => {
   'use strict';
@@ -482,7 +512,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
   function allEvents() { return [...OFFICIAL_EVENTS, ...(state.showDemos ? DEMOS : []), ...custom]; }
   function relevantDate(e) { return e.endDate||e.startDate||e.deadline||''; }
-  function isLocated(e) { return e.mode === 'offline' && Number.isFinite(e.lat) && Number.isFinite(e.lng); }
+  function isLocated(e) { return e.mode === 'offline' && Number.isFinite(e.lat) && e.lat>=-90 && e.lat<=90 && Number.isFinite(e.lng) && e.lng>=-180 && e.lng<=180; }
   function kilometers(a,b,c,d) { const r = 6371, toRad = x => x * Math.PI / 180, v = Math.sin(toRad(c-a)/2)**2 + Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(toRad(d-b)/2)**2; return 2*r*Math.asin(Math.min(1,Math.sqrt(v))); }
   function registrationStatus(e, now = new Date()) {
     const day=seoulYmd(now),end=e.endDate||e.startDate;
@@ -667,14 +697,30 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     favorites.delete(id);persist(STORAGE_FAVS,[...favorites]);closeModal('detailBackdrop');render();toast('대회가 삭제됐어요.');
   }
 
+  function mapSummary(events) {
+    if(!events.length) return '검색 조건에 맞는 대회가 없어요. 필터를 조정해 주세요.';
+    const mapped=events.filter(isLocated),online=events.filter(e=>e.mode==='online').length;
+    const unlocated=events.filter(e=>e.mode==='offline'&&!isLocated(e)).length;
+    const notes=[mapped.length?`지도에 표시된 오프라인 대회 ${mapped.length}개 / 검색 결과 ${events.length}개.`:'현재 지도에 표시할 오프라인 대회가 없어요.'];
+    if(online) notes.push(`온라인 ${online}개는 지도에 표시하지 않아요.`);
+    if(unlocated) notes.push(`장소 위치 미등록 ${unlocated}개는 목록에서 확인해 주세요.`);
+    if(mapped.some(e=>!e.demo)) notes.push('핀은 개최 시설의 대표 위치예요.');
+    if(mapped.some(e=>e.demo)) notes.push('가상 예시는 실제 개최 장소가 아니에요.');
+    return notes.join(' ');
+  }
   function renderMap(events) {
-    const note=$('mapFootnote');const mapped=events.filter(isLocated);
-    note.textContent=mapped.length?`좌표가 등록된 오프라인 대회 ${mapped.length}개 / 검색 결과 ${events.length}개 · 가상 예시는 가상 위치입니다.`:'현재 결과에는 좌표가 확인된 대회가 없어요. 상세 정보의 장소와 공식 공고를 확인하세요. 가상 예시를 켜면 지도 기능을 체험할 수 있어요.';
+    const mapped=events.filter(isLocated);
+    $('mapFootnote').textContent=mapSummary(events);
     if (typeof window.L === 'undefined'){$('mapError').classList.remove('hidden');return;}
     $('mapError').classList.add('hidden');
     if(!map){map=L.map('map',{zoomControl:true}).setView([37.2636,127.0286],10);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);markerLayer=L.layerGroup().addTo(map);}
     markerLayer.clearLayers();const bounds=[];
-    for(const e of mapped){const m=L.marker([e.lat,e.lng]).addTo(markerLayer);m.bindPopup(`<div class="map-popup-title">${escapeHtml(e.title)}</div><div class="map-popup-note">${escapeHtml(e.category)} · ${formatDate(e.startDate)}${e.demo?' · 가상 예시':''}</div><button class="map-popup-button" type="button" data-map-detail="${escapeHtml(e.id)}">상세 보기</button>`);bounds.push([e.lat,e.lng]);}
+    for(const e of mapped){
+      const m=L.marker([e.lat,e.lng],{title:e.title,alt:e.title}).addTo(markerLayer);
+      m.bindTooltip(escapeHtml(e.venue));
+      m.bindPopup(`<div class="map-popup-title">${escapeHtml(e.title)}</div><div class="map-popup-note">${escapeHtml(e.venue)}</div><div class="map-popup-note">${escapeHtml(eventDateLabel(e))}</div><div class="map-popup-note">${escapeHtml(registrationStatus(e).label)}${e.demo?' · 가상 예시':''}</div><button class="map-popup-button" type="button" data-map-detail="${escapeHtml(e.id)}">상세 보기</button>`,{maxWidth:300});
+      bounds.push([e.lat,e.lng]);
+    }
     if(state.position){const latlng=[state.position.lat,state.position.lng];positionMarker&&map.removeLayer(positionMarker);positionMarker=L.circleMarker(latlng,{radius:8,color:'#fff',weight:3,fillColor:'#5a58d7',fillOpacity:1}).addTo(map).bindPopup('현재 위치 · 주변 지도를 불러올 때 외부 지도 서버에 접속합니다'); if(state.nearOnly) bounds.push(latlng);}
     else if(positionMarker){map.removeLayer(positionMarker);positionMarker=null;}
     setTimeout(()=>{map.invalidateSize();if(bounds.length){map.fitBounds(bounds,{padding:[38,38],maxZoom:11});}else if(state.position){map.setView([state.position.lat,state.position.lng],11);}},80);
@@ -700,7 +746,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   }
   function exportJson(){
     if(!custom.length){toast('내보낼 개인 등록 대회가 없어요. 공식 공고 목록은 사이트에 포함돼 있어요.');return;}
-    const json=JSON.stringify({version:'0.3.1',exportedAt:new Date().toISOString(),events:custom},null,2);
+    const json=JSON.stringify({version:'0.3.2',exportedAt:new Date().toISOString(),events:custom},null,2);
     const blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
     a.href=url;a.download=`moa-events-${TODAY}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('내가 등록한 대회 정보를 내보냈어요.');
   }
